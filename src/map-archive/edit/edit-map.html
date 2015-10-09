@@ -1,0 +1,12 @@
+<npdc:formula></npdc:formula>
+
+<span ng-repeat="image in img.editImageLinks(document.links)">
+  <img ng-src="{{img.preview(image.href, 'thumb')}}" alt="{{image.title}}" title="{{image.title}}">
+</span>
+
+<span ng-repeat="image in img.editImageLinks(document.links)">
+  <img ng-src="{{img.preview(image.href, 'medium')}}" alt="{{image.title}}" title="{{image.title}}" style="width: 97%;">
+</span>
+<!--<a ng-if="document" ng-href="{{img.src(document, 'large')}}" target="_blank" alt="Open large preview in new window">
+  <img ng-src="{{img.src(document, 'medium')}}" alt="{{e.title}}" style="width: 97%;">
+</a>-->

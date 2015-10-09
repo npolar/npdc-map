@@ -1,0 +1,26 @@
+'use strict';
+
+/**
+ * @ngInject
+ */
+var router = function ($routeProvider, $locationProvider) {
+
+  $locationProvider.html5Mode(true).hashPrefix('!');
+  
+  
+
+  $routeProvider.when('/', {
+    redirectTo: '/archive'    
+  }).when('/archive/:id', {
+    templateUrl: 'map-archive/show/show-map.html',
+    controller: 'MapArchiveShowController'
+  }).when('/archive/:id/edit', {
+    templateUrl: 'map-archive/edit/edit-map.html',
+    controller: 'MapArchiveEditController'
+  }).when('/archive', {
+    templateUrl: 'map-archive/search/search-map-archive.html',
+    controller: 'MapArchiveSearchController'
+  });
+};
+
+module.exports = router;

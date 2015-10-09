@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="npdcMapArchiveApp" ng-cloak">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<base href="/map/"/>
+	<title>Maps</title>
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="/assets/npdc-common-master-latest.css" rel="stylesheet">
+	
+	<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-map version:", VERSION)</script>
+
+	<!--<script src="/ng-flow-standalone.min.js"></script>-->
+	
+
+	
+</head>
+<body class="np-body" layout="row">
+  
+	<npdc-md:sidenav class="np-sidenav" sidenav="{'title': 'Map Archive'}">
+	</npdc-md:sidenav>
+	
+  <div layout="column" flex role="main">
+    <npdc:top class="np-header" top="{'title': 'Map Archive'}"></npdc:top>
+    <md-content class="np-content" flex md-scroll-y>
+      <div layout-padding>
+				<npdc:crumbs></npdc:crumbs>
+	  		<div ng-view></div>
+			</div>
+		</md-content>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "fieldsets": [
+    {
+      "title": "Map",
+      "fields": [
+        "title", "subtitle",
+       {
+          "id": "type"
+        },
+        { "id": "scale", "step": 100000 },
+        {
+          "id": "restricted"
+        }
+      ]
+    },
+    {
+      "title": "Publication",
+      "fields": [
+        {
+          "id": "publication"
+        }
+      ]
+    },
+    { "title" : "Texts",
+      "fields": ["summaries",
+        "comments"]
+    },
+    {
+      "title": "Geographic",
+      "fields": [
+        {
+          "id": "location", "fields": [
+            { "id": "bbox" },
+            { "id": "hemisphere"},
+            { "id": "country" },
+            { "id": "area" },
+            { "id": "placename" }
+          ]
+        },
+        "cartography"
+ 
+        
+      ]
+    },
+    {
+      "title": "Archives",
+      "fields": [
+        {
+          "id": "archives"
+        }
+      ]
+    },
+    {
+      "title": "People",
+      "fields": [
+        {
+          "id": "processor"
+        }
+      ]
+    },
+    {
+      "title": "Tags",
+      "fields": [
+        {
+          "id": "tags"
+        }
+      ]
+    },
+        { 
+      "title": "Links",
+      "fields": [
+        {
+          "id": "links"
+        }
+      ]
+    }
+  ]
+}
