@@ -9,12 +9,14 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
     
-  let defaults = { limit: 25, sort: "-updated", fields: 'title,id,links,publication.year,collection',
-      facets: 'type,location.area,location.country',
-      'rangefacet-publication.year': 50,
+  let defaults = { limit: 25, sort: "-updated", fields: 'id,title,code,links,publication.year,collection',
+    facets: 'type,location.area,location.country',
+    'rangefacet-publication.year': 25
   };
   
-  let invariants = $scope.security.isAuthenticated() ? {} : { 'not-restricted': true, 'filter-links.rel': 'edit-media' } ;
+  let invariants = $scope.security.isAuthenticated() ? {} : { 'not-restricted': true, 'filter-links.rel': 'edit-media',
+    'filter-links.length': '1..'
+  };
            
   if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
 
