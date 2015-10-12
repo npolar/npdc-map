@@ -11,7 +11,7 @@ function create_preview {
   
   if [[ ! -f $preview ]] ; then
     mkdir -p `dirname $preview`
-    echo "JPEG [$size px] <- $original"
+    echo "JPEG [$size px] <- $original -> $preview"
     `nice convert -resize $size -quality 80 $tif $preview`
   fi  
 }  
@@ -25,11 +25,6 @@ do
 
     if curl --output /dev/null --silent --head --fail $uri; then
       
-      if [[ $uri =~ TIF$ ]] ; then
-        echo $uri
-      fi
-      
-      
       yearIsodate=`echo $uri | grep -oE '/([0-9]{4})/[0-9]{4}-[0-9]{2}-[0-9]{2}/'` # /2015/2015-12-31/
       year=`echo $yearIsodate | grep -oE '^/[0-9]{4}/' | grep -oE '[0-9]{4}'` # 2015
       access=`echo $uri | grep -oE 'open|restricted'` # open
@@ -38,7 +33,7 @@ do
       # Check if TIF is on disk
       if [[ -f $tif ]] ; then
        
-        destNoExt=$dest/$access/$format$yearIsodate`basename $tif .tif`
+        destNoExt=$dest/$access/$format$yearIsodate`basename $tif`
         large=$destNoExt-large
         medium=$destNoExt-medium
         small=$destNoExt-small
