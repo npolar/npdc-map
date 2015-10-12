@@ -11,7 +11,7 @@ function create_preview {
   
   if [[ ! -f $preview ]] ; then
     mkdir -p `dirname $preview`
-    echo "JPEG [$size px] <- $original -> $preview"
+    echo "JPEG [$size px] <- $original"
     `nice convert -resize $size -quality 80 $tif $preview`
   fi  
 }  
@@ -22,6 +22,8 @@ do
   
   # Check if edit-media URI (original TIF) exists on HTTP
   if [[ $uri =~ ^https?* ]] ; then
+
+    # echo $uri
 
     if curl --output /dev/null --silent --head --fail $uri; then
       
