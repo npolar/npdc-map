@@ -4,7 +4,7 @@
  *
  * @ngInject
  */
-var MapArchiveShowController = function ($scope, $controller, $log, $routeParams, MapArchive, NpolarApiSecurity) {
+var MapArchiveShowController = function ($scope, $controller, $log, $routeParams, MapArchive) {
   
   $controller('MapArchiveSearchController', {$scope: $scope});
   
@@ -15,7 +15,8 @@ var MapArchiveShowController = function ($scope, $controller, $log, $routeParams
       $scope.document = map;
   
       $scope.similar = {};
-      let relatedQuery = { q: map.title, fields: 'id,code,title,type,publication.year,restricted', score: true, limit: "all" };
+      let q = map.title +' '+ map.title +' '+ map.code;
+      let relatedQuery = { q , fields: 'id,code,title,type,publication.year,restricted', score: true, limit: "all" };
       let notSelfQuery = {'not-id': map.id };
       
       MapArchive.array(Object.assign(relatedQuery, notSelfQuery), related => {
