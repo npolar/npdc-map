@@ -9,18 +9,18 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
     
-  let defaults = { limit: 25, sort: "-updated", fields: 'id,title,code,links,publication.year,collection',
+  let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,links,publication.year,collection',
     facets: 'type,location.area,location.country',
     'rangefacet-publication.year': 25
   };
   
-  let invariants = $scope.security.isAuthenticated() ? {} : { 'not-restricted': true, 'filter-links.rel': 'edit-media',
-    'filter-links.length': '1..'
+  let invariants = $scope.security.isAuthenticated() ? {} : { 'not-restricted': true, 'filter-links.rel': 'edit-media'
+    //,'filter-links.length': '0..'
   };
            
   if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
 
-    defaults.facets += ',archives.organisation,publication.publisher,publication.restricted,code,publication.series,publication.country,location.hemisphere';
+    defaults.facets += ',archives.restricted,organisation,publication.publisher,publication.code,publication.series,publication.country,location.hemisphere';
     
     if (!$location.search()['filter-created']) {
       defaults['date-year'] = 'created';
@@ -30,6 +30,8 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   }
         
   let query = Object.assign(defaults, $location.search(), invariants);
+  
+  $log.debug(query);
   
   NpdcAutocompleteConfig.selectedDefault = ['map/archive'];
   NpdcAutocompleteConfig.placeholder = 'Search map archive';
