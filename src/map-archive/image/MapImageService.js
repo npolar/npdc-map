@@ -1,9 +1,13 @@
 'use strict';
 
 // @ngInject
-let MapImageService = function() {
+let MapImageService = function($log, $window) {
   
   this.schema = 'http://api.npolar.no/schema/map-archive-1';
+  
+  this.base = '//data.npolar.no/_file/map/archive';
+  
+  this.previewFormat = 'jpeg';
   
   let editMediaLink = function(d) {
     let mediaLink = d.links.find(l => { return (l.rel === 'edit-media'); });
@@ -45,7 +49,7 @@ let MapImageService = function() {
   
   };
   
-  this.src = function(d, size='medium', extension='jpg') {
+  this.src = function(d, size='medium', extension='jpg', restricted=false) {
     if (d === undefined || !d.links) {
       return '';
     }
@@ -78,6 +82,7 @@ let MapImageService = function() {
   
   this.preview = function(uri, size='medium', extension='jpg') {
     let path;
+    
     if (/https?:\/\/api\.npolar\.no/.test(uri)) {
       
       let parts = uri.split("//")[1].split('/');
@@ -86,8 +91,16 @@ let MapImageService = function() {
       let ident = parts[parts.length-1]; // "11344"
       path = "https://data.npolar.no/_file/map/archive/open/legacy/"+ident+"/"+size+"/"+filename+"."+extension;
 
-    } else {
-      path = uri.replace(/\.tif(f)?$/i, `-${size}.${extension}`);
+    } else if (/(open|restricted)/.test(uri)) {
+
+      let p;
+      p = uri.split(/(open|restricted)/).slice(-2); // ["open", "/2015/2015-05-21/Bouvetøya_1986.tif"]
+      extension = (extension === 'jpg') ? 'jpeg' : extension;
+      
+      p[1] = p[1].replace(/\.tif(f)?$/i, `-${size}.${extension}`);
+      
+      path = `${this.base}/${p[0]}/${this.previewFormat}${p[1]}`;
+
     }
     return path;
   };
@@ -101,9 +114,25 @@ let MapImageService = function() {
     });
   };
   
-  this.linkTitle = function(map) {
-    return ``;
+  this.title = function(map) {
+    if (map && map.title) {
+     
+      let title = map.title;
+      if (map.publication && map.publication.code) {
+        title = `[${map.publication.code}] ${title}`;
+      }
+      if (map.subtitle) {
+        title += ': '+map.subtitle;
+      }
+      if (map.publication && map.publication.year) {
+        title += ` (${map.publication.year})`;
+      } else {
+         title += ` (unkown year)`;
+      }
+      return title;
+    }
   };
+  
   
   return this;
 };
