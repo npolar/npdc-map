@@ -7,13 +7,15 @@
   <section>
     
     <h1>
-      <span>{{ document.publication.code }}</span>
+      
+      <span>{{ img.title(document) }}</span>
+   <!--   <span>{{ document.publication.code }}</span>
         
       <span>{{ document.title }}</span>
       
       <span>{{ document.subtitle }}</span>
         
-      <span>({{ (document.publication.year > 0) ? document.publication.year : 'unknown year' }})</span>
+      <span>({{ (document.publication.year > 0) ? document.publication.year : 'unknown year' }})</span>-->
       
       <span>{{ (document.scale > 0) ? '1:'+document.scale : '' }}</span>
       
@@ -31,7 +33,7 @@
         series: <a ng-href="?filter-publication.series={{document.publication.series}}">{{ document.publication.series }}</a> / type: <a ng-href="?q=&filter-type={{document.type}}">{{document.type}}</a>
       </span>
       
-      <span ng-if="document.code">
+      <span ng-if="document.publication.code">
         / code: <a ng-href="?filter-publication.code={{document.publication.code}}">{{ document.publication.code }}</a>
       </span>
           
@@ -69,7 +71,7 @@
    
     <section ng-if="!document.restricted || document.restricted == false">
       <span ng-repeat="image in img.editImageLinks(document.links)">
-        <img ng-src="{{img.preview(image.href, 'small')}}" alt="{{image.title}}" title="{{image.title}}">
+        <img ng-src="{{img.preview(image.href, 'medium')}}" alt="{{image.title}}" title="{{image.title}}" width="100%">
       </span>
     </section>
    
@@ -106,7 +108,7 @@
   
   <npdc:edit-button></npdc:edit-button>
   
-  @todo Download [original]
+  <!--@todo Download [original]-->
 
 </md-card-content>
 </md-card>
