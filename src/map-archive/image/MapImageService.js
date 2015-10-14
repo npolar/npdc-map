@@ -22,13 +22,13 @@ let MapImageService = function($log, $window) {
    return {
       schema: this.schema,
       type: 'topographic',
-      rightsHolder: {
-          name: 'Norsk Polarinstitutt'
-      },
       publication: {
         country: 'NO',
         publisher: 'Norsk Polarinstitutt',
         where: 'Tromsø'
+      },
+      rightsHolder: {
+        name: 'Norsk Polarinstitutt'
       },
       location: {
         country: 'NO',
@@ -49,7 +49,7 @@ let MapImageService = function($log, $window) {
   
   };
   
-  this.src = function(d, size='medium', extension='jpg', restricted=false) {
+  this.src = function(d, size='small', extension='jpg', restricted=false) {
     if (d === undefined || !d.links) {
       return '';
     }
