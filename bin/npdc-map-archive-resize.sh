@@ -11,8 +11,8 @@ function create_preview {
   
   if [[ ! -f $preview ]] ; then
     mkdir -p `dirname $preview`
-    echo "JPEG [$size px] <- $original"
-    `nice convert -resize $size -quality 80 $tif $preview`
+    echo "JPEG [$size px] <- $original -> `dirname $preview`"
+    `nice convert -resize $size -quality 80 $tif $preview 2> /dev/null`
   fi  
 }  
 
@@ -35,7 +35,11 @@ do
       # Check if TIF is on disk
       if [[ -f $tif ]] ; then
        
-        destNoExt=$dest/$access/$format$yearIsodate`basename $tif`
+        filename=`basename $tif .tif`
+        filename=`basename $filename .TIF`
+        
+        destNoExt=$dest/$access/$format$yearIsodate$filename
+        
         large=$destNoExt-large
         medium=$destNoExt-medium
         small=$destNoExt-small
