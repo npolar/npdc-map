@@ -57,7 +57,7 @@
   <section>
 
         <p ng-repeat="s in document.summaries">{{ s.summary }} [{{ s.lang }}]</p>
-        <div ng-if="security.isAuthenticated()">
+        <div ng-if="security.hasSystem(resource.path)">
           <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>  
         </div>
         
@@ -101,8 +101,13 @@
   <hr/>  
   <section>
     <p>
-      <a ng-href="archive/{{document.id}}">{{document.title}}</a> was prepared by <a ng-href="?filter-processor.name={{document.processor.name }}">{{document.processor.name}}</a>
-      Created: {{document.created  }} by {{ document.created_by}}, updated {{ document.updated  }} by {{ document.updated_by}} [revision number {{ document._rev.split('-')[0] }}]
+      
+      <a ng-href="archive/{{document.id}}">{{ img.title(document)}}</a>
+      
+      {{ rights | json }}
+      
+      was prepared by <a ng-href="?filter-processor.name={{document.processor.name }}">{{document.processor.name}}</a>,
+      updated {{document.updated.split('T')[0] }} [revision number {{ document._rev.split('-')[0] }}]
     </p>
   </section>
   
