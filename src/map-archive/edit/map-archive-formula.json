@@ -18,12 +18,12 @@
       "fields": [
         {
           "id": "publication"
-        }
+        }, "rightsHolder"
       ]
     },
     { "title" : "Texts",
       "fields": ["summaries",
-        "comments"]
+        "comments", "tags"]
     },
     {
       "title": "Geographic",
@@ -38,8 +38,6 @@
           ]
         },
         "cartography"
- 
-        
       ]
     },
     {
@@ -58,15 +56,7 @@
         }
       ]
     },
-    {
-      "title": "Tags",
-      "fields": [
-        {
-          "id": "tags"
-        }
-      ]
-    },
-        { 
+    { 
       "title": "Links",
       "fields": [
         {
