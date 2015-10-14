@@ -23,8 +23,6 @@ do
   # Check if edit-media URI (original TIF) exists on HTTP
   if [[ $uri =~ ^https?* ]] ; then
 
-    # echo $uri
-
     if curl --output /dev/null --silent --head --fail $uri; then
       
       yearIsodate=`echo $uri | grep -oE '/([0-9]{4})/[0-9]{4}-[0-9]{2}-[0-9]{2}/'` # /2015/2015-12-31/
@@ -51,12 +49,11 @@ do
         create_preview $tif $thumb.$format 512
         
         # For restricted we also create a tiny preview in "open"
-        openThumb=$dest/open/$format$yearIsodate`basename $tif .tif`-thumb.$format
+        openThumb=$dest/open/$format$yearIsodate$filename-thumb.$format
         create_preview $tif $openThumb 512
         
       fi
       
-
     else
       echo "Not found: $uri";
     fi
