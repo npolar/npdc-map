@@ -40,6 +40,10 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
     detail: "publication/year"
   };
 
+  $scope.gotoMap = function (id) {
+    $location.url('/archive/'+id);
+  };
+
   $scope.$on('$locationChangeSuccess', (event, data) => {
     search();
   });

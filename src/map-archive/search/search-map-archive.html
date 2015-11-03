@@ -12,9 +12,9 @@
             md-cols-gt-md="4"
             md-row-height="1:1"
             md-gutter="8px">
-            <md-grid-tile ng-repeat="map in feed.entries | filter:entryfilter">
+            <md-grid-tile ng-repeat="map in feed.entries | filter:entryfilter" ng-click="gotoMap(map.id);">
               <div class="np-grid-flex">
-                <img alt="{{ img.title(map) }}" title="{{ img.title(map) }}" src="{{img.src(map)}}" class="np-grid-img">
+                <img alt="{{ img.title(map) }}" title="{{ img.title(map) }}" ng-src="{{img.src(map)}}" class="np-grid-img">
               </div>
               <md-grid-tile-footer>
                 <h3>{{ img.title(map) }}</h3>
