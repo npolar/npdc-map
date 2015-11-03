@@ -6,11 +6,11 @@
 var router = function ($routeProvider, $locationProvider) {
 
   $locationProvider.html5Mode(true).hashPrefix('!');
-  
-  
+
+
 
   $routeProvider.when('/', {
-    redirectTo: '/archive'    
+    redirectTo: '/archive'
   }).when('/archive/:id', {
     templateUrl: 'map-archive/show/show-map.html',
     controller: 'MapArchiveShowController'
@@ -19,7 +19,8 @@ var router = function ($routeProvider, $locationProvider) {
     controller: 'MapArchiveEditController'
   }).when('/archive', {
     templateUrl: 'map-archive/search/search-map-archive.html',
-    controller: 'MapArchiveSearchController'
+    controller: 'MapArchiveSearchController',
+    reloadOnSearch: false
   });
 };
 

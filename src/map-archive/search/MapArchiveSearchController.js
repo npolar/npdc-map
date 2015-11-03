@@ -19,9 +19,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   };
 
   if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
-
     defaults.facets += ',archives.restricted,organisation,publication.publisher,publication.code,publication.series,publication.country,location.hemisphere';
-
     if (!$location.search()['filter-created']) {
       defaults['date-year'] = 'created';
     } else {
@@ -29,16 +27,22 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
     }
   }
 
-  let query = Object.assign(defaults, $location.search(), invariants);
+  let search = function () {
+    let query = Object.assign(defaults, $location.search(), invariants);
+    $scope.search(query);
+  };
 
-  $log.debug(query);
-  $scope.search(query);
+  search();
 
   npdcAppConfig.cardTitle = "Map Archive";
   npdcAppConfig.search.results = {
     subtitle: "location/area",
     detail: "publication/year"
   };
+
+  $scope.$on('$locationChangeSuccess', (event, data) => {
+    search();
+  });
 
 };
 
