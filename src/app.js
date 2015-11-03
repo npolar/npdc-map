@@ -1,6 +1,5 @@
 'use strict';
 
-var environment = require('../environment');
 var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 
@@ -39,12 +38,12 @@ npdcMapApp.config($httpProvider => {
 });
 
 //npdcMapApp.config(flowFactoryProvider => {
-//  
+//
 //  flowFactoryProvider.factory = function (opts) {
 //    var Flow = require('flow.js');
 //    return new Flow(opts);
 //  };
-//  
+//
 //  flowFactoryProvider.defaults = {
 //    target: 'http://data.npolar.no:8080/index.php',
 //    permanentErrors: [404, 500, 501],
@@ -53,7 +52,7 @@ npdcMapApp.config($httpProvider => {
 //    simultaneousUploads: 4,
 //    singleFile: true
 //  };
-//  
+//
 //  flowFactoryProvider.on('catchAll', function (event) {
 //    console.log('catchAll', arguments);
 //  });
@@ -63,10 +62,11 @@ npdcMapApp.config($httpProvider => {
 
 // Inject npolarApiConfig and run
 npdcMapApp.run((npolarApiConfig, npdcAppConfig) => {
+  var environment = "production";
   var autoconfig = new AutoConfig(environment);
   angular.extend(npolarApiConfig, autoconfig, { resources, formula : { template : 'default' } });
   console.log("npolarApiConfig", npolarApiConfig);
-  
+
   npdcAppConfig.cardTitle = '';
   npdcAppConfig.toolbarTitle = 'Map archive';
 });
