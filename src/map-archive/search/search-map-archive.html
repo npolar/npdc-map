@@ -1,48 +1,49 @@
 
 <div class="np-page-container" ng-if="feed.entries.length > 0">
-  
+
   <md-tabs md-dynamic-height md-border-bottom>
 
     <md-tab label="Preview">
-      
+
       <md-content layout-padding class="np-content np-layout-grid">
-        
-        <md-grid-list md-cols-sm="1" md-cols-md="1" md-cols-gt-md="5" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
-          <md-grid-tile ng-repeat="map in feed.entries | filter:entryfilter" md-colspan-gt-sm="1" md-rowspan-gt-sm="1">
-            <div class="np-grid-flex">
-              <a href="archive/{{ map.id }}"><img alt="{{ img.title(map) }}" title="{{ img.title(map) }}"  ng-src="{{ img.src(map) }}" class="np-grid-img"></a>
-            </div>
-            <md-grid-tile-footer style="background-color: #333;">
-              <a ng-href="archive/{{ map.id }}" style="height: 100%; width: 100%; color: white;">{{ img.title(map) }}</a>      
-            </md-grid-tile-footer>    
-          </md-grid-tile>
-        </md-grid-list>
-        
-        
-        <span ng-if="feed.opensearch.totalResults > 0">{{feed.opensearch.totalResults}} results, showing {{ feed.entries.length }}
-          <button ng-if="showNext()" ng-click="next()">More</button>
-        </span>
-        <span ng-if="feed.opensearch.totalResults == 0">No results</span>
-        
+        <div class="np-padding">
+          <md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="4" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
+            <md-grid-tile ng-repeat="map in feed.entries | filter:entryfilter" md-rowspan="1" md-colspan="1" md-colspan-sm="1">
+              <div class="np-grid-flex">
+                <a href="archive/{{ map.id }}"><img alt="{{ img.title(map) }}" title="{{ img.title(map) }}"  ng-src="{{ img.src(map) }}" class="np-grid-img"></a>
+              </div>
+              <md-grid-tile-footer style="background-color: #333;">
+                <a ng-href="archive/{{ map.id }}" style="height: 100%; width: 100%; color: white;">{{ img.title(map) }}</a>
+              </md-grid-tile-footer>
+            </md-grid-tile>
+          </md-grid-list>
+
+
+          <span ng-if="feed.opensearch.totalResults > 0">{{feed.opensearch.totalResults}} results, showing {{ feed.entries.length }}
+            <button ng-if="showNext()" ng-click="next()">More</button>
+          </span>
+          <span ng-if="feed.opensearch.totalResults == 0">No results</span>
+        </div>
+
       </md-content>
-      
+
     </md-tab>
-        
+
     <md-tab label="View">
       <md-content>
         <section ng-repeat="map in feed.entries">
- 
+
           <span ng-repeat="image in img.editImageLinks(map.links)">
             <img ng-src="{{img.preview(image.href, 'medium')}}" alt="{{ image.title }}" title="{{ image.title || img.title(map) }}" width="100%">
           </span>
-        </section>  
+        </section>
       </md-content>
     </md-tab>
-    
+
     <md-tab label="Search">
-      <npdc:autocomplete></npdc:autocomplete>
+      <npdc-search:input></npdc-search:input>
       <npdc:search></npdc:search>
     </md-tab>
-    
-  </md-tabs>     
+
+  </md-tabs>
 </div>
