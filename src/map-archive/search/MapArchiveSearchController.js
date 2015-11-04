@@ -35,7 +35,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   search();
 
   npdcAppConfig.cardTitle = "Map Archive";
-  npdcAppConfig.search.results = {
+  npdcAppConfig.search.local.results = {
     subtitle: "location/area",
     detail: "publication/year"
   };
