@@ -37,7 +37,16 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   npdcAppConfig.cardTitle = "Map Archive";
   npdcAppConfig.search.local.results = {
     subtitle: "location/area",
-    detail: "publication/year"
+    detail: (e) => "Published: " + (e.publication ? e.publication.year : '-')
+  };
+
+  npdcAppConfig.search.local.filterUi = {
+    'publication.year': {
+      type: 'range'
+    },
+    'updated': {
+      type: 'hidden'
+    }
   };
 
   $scope.gotoMap = function (id) {
