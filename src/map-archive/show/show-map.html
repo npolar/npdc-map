@@ -1,84 +1,80 @@
-<div ng-show="!document">Loading...</div>  
-<article ng-show="document">
-  
-  <md-card>
-  <md-card-content>  
-  
+<!DOCTYPE html>
+<div ng-show="!document">Loading...</div>
+<article ng-show="document" layout-padding>
   <section>
-    
+
     <h1>
-      
+
       <span>{{ img.title(document) }}</span>
    <!--   <span>{{ document.publication.code }}</span>
-        
+
       <span>{{ document.title }}</span>
-      
+
       <span>{{ document.subtitle }}</span>
-        
+
       <span>({{ (document.publication.year > 0) ? document.publication.year : 'unknown year' }})</span>-->
-      
-      <span>{{ (document.scale > 0) ? '1:'+document.scale : '' }}</span>
-      
+
+      <span>{{ scale(document.scale) }}</span>
+
     </h1>
-    
+
     <p>
-      <a ng-href="?filter-type={{document.type}}">{{document.type}}</a> map
-      
-      <span ng-if="document.restricted === true">
-        © <a ng-href="?filter-rightsHolder.name={{document.rightsHolder.name}}">{{ document.rightsHolder.name }}</a>
-      </span>  
-    <p>
-      
-      <span ng-if="document.series">
-        series: <a ng-href="?filter-publication.series={{document.publication.series}}">{{ document.publication.series }}</a> / type: <a ng-href="?q=&filter-type={{document.type}}">{{document.type}}</a>
+      type: <a ng-href="?filter-type={{document.type}}">{{document.type}}</a>
+
+      <span ng-if="document.restricted === true && document.rightsHolder">
+        / © <a ng-href="?filter-rightsHolder.name={{document.rightsHolder.name}}">{{ document.rightsHolder.name }}</a>
       </span>
-      
+
+      <span ng-if="document.series">
+        / series: <a ng-href="?filter-publication.series={{document.publication.series}}">{{ document.publication.series }}</a> / type: <a ng-href="?q=&filter-type={{document.type}}">{{document.type}}</a>
+      </span>
+
       <span ng-if="document.publication.code">
         / code: <a ng-href="?filter-publication.code={{document.publication.code}}">{{ document.publication.code }}</a>
       </span>
-          
+
      <span ng-if="document.scale > 0">
         / scale: <a ng-href="?filter-scale={{document.scale}}">1:{{document.scale}}</a>
       </span>
-        
-        / area: <a ng-href="?filter-location.area={{document.location.area }}">{{document.location.area }}</a>   
+
+        / area: <a ng-href="?filter-location.area={{document.location.area }}">{{document.location.area }}</a>
 
         / publisher: <a href="?filter-publication.publisher={{document.publication.publisher}}">{{ document.publication.publisher }}</a>
-        
-        / published: <a ng-href="?filter-publication.year={{document.publication.year}}">{{ (document.publication.year > 0) ? document.publication.year : 'unknown year' }}</a> in <a ng-href="?filter-publication.country={{document.publication.country | uppercase }}">{{ document.publication.country }}</a>
-      
+
+        / published: <a ng-href="?filter-publication.year={{document.publication.year}}">{{ year(document.publication.year) }}</a> in <a ng-href="?filter-publication.country={{document.publication.country | uppercase }}">{{ document.publication.country }}</a>
+
         / access: <a href="?filter-restricted={{ document.restricted == true ? 'true' : 'false' }}">{{ document.restricted == true ? 'restricted' : 'open' }}</a>
 
     </p>
 
   </section>
-  
-  <hr/>
+
+  <md-divider></md-divider>
   <section>
 
         <p ng-repeat="s in document.summaries">{{ s.summary }} [{{ s.lang }}]</p>
         <div ng-if="security.hasSystem(resource.path)">
-          <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>  
+          <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>
         </div>
-        
+
 
   </section>
-  
+
 
    <span ng-if="document.restricted === true" ng-repeat="image in img.editImageLinks(document.links)">
      <img ng-src="{{img.preview(image.href, 'thumb')}}" alt="{{e.title}}">
    </span>
-   
+
     <section ng-if="!document.restricted || document.restricted == false">
       <span ng-repeat="image in img.editImageLinks(document.links)">
         <img ng-src="{{img.preview(image.href, 'medium')}}" alt="{{image.title}}" title="{{image.title}}" width="100%">
       </span>
     </section>
-   
+
   <section ng-if="similar.maps.length > 0">
 
     <h3>See also</h3>
-    
+
     <div>
       <ul>
         <li ng-repeat="m in similar.maps">
@@ -89,33 +85,29 @@
     </div>
 
   </section>
-  
+
   <section ng-show="document.tags">
     <h3>Tags</h3>
     <span ng-repeat="tag in document.tags">
       <a href="?q={{tag}}">{{tag}}</a> /
     </span>
-     
+
   </section>
-  
-  <hr/>  
+
+  <md-divider></md-divider>
   <section>
     <p>
-      
+
       <a ng-href="archive/{{document.id}}">{{ img.title(document)}}</a>
-      
+
       {{ rights | json }}
-      
+
       was prepared by <a ng-href="?filter-processor.name={{document.processor.name }}">{{document.processor.name}}</a>,
       updated {{document.updated.split('T')[0] }} [revision number {{ document._rev.split('-')[0] }}]
     </p>
   </section>
-  
-  <npdc:edit-button></npdc:edit-button>
-  
-  <!--@todo Download [original]-->
 
-</md-card-content>
-</md-card>
-   
+  <npdc:edit-button class="np-primary-control"></npdc:edit-button>
+
+  <!--@todo Download [original]-->
 </article>

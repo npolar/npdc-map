@@ -1,3 +1,7 @@
 md-grid-tile:hover {
-  cursor: pointer; 
+  cursor: pointer;
+}
+
+md-tabs .np-primary-control {
+  display: none;
 }

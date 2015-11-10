@@ -28,7 +28,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   }
 
   let search = function () {
-    let query = Object.assign(defaults, $location.search(), invariants);
+    let query = Object.assign({}, defaults, $location.search(), invariants);
     $scope.search(query);
   };
 
@@ -42,6 +42,9 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
 
   npdcAppConfig.search.local.filterUi = {
     'publication.year': {
+      type: 'range'
+    },
+    'year-created': {
       type: 'range'
     },
     'updated': {
