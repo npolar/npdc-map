@@ -28,7 +28,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   }
 
   let search = function () {
-    let query = Object.assign({}, defaults, $location.search(), invariants);
+    let query = Object.assign({}, defaults, invariants);
     $scope.search(query);
   };
 
