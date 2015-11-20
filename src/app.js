@@ -4,13 +4,10 @@ var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 
 var angular = require('angular');
-require('formula');
-require('angular-route');
-require('angular-npolar');
 
 //require('../node_modules/ng-flow/dist/ng-flow.js');
 
-var npdcMapApp = angular.module('npdcMapArchiveApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);
+var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcUi']);
 
 npdcMapApp.service('MapImageService', require('./map-archive/image/MapImageService'));
 npdcMapApp.controller('MapArchiveShowController', require('./map-archive/show/MapArchiveShowController'));
