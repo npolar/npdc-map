@@ -7,7 +7,7 @@ var angular = require('angular');
 
 //require('../node_modules/ng-flow/dist/ng-flow.js');
 
-var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcUi']);
+var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcCommon']);
 
 npdcMapApp.service('MapImageService', require('./map-archive/image/MapImageService'));
 npdcMapApp.controller('MapArchiveShowController', require('./map-archive/show/MapArchiveShowController'));
