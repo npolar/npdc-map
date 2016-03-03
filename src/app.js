@@ -2,11 +2,7 @@
 
 var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
-
 var angular = require('angular');
-
-//require('../node_modules/ng-flow/dist/ng-flow.js');
-
 var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcCommon']);
 
 npdcMapApp.service('MapImageService', require('./map-archive/image/MapImageService'));
@@ -34,36 +30,24 @@ npdcMapApp.config($httpProvider => {
   $httpProvider.interceptors.push('npolarApiInterceptor');
 });
 
-//npdcMapApp.config(flowFactoryProvider => {
-//
-//  flowFactoryProvider.factory = function (opts) {
-//    var Flow = require('flow.js');
-//    return new Flow(opts);
-//  };
-//
-//  flowFactoryProvider.defaults = {
-//    target: 'http://data.npolar.no:8080/index.php',
-//    permanentErrors: [404, 500, 501],
-//    maxChunkRetries: 0,
-//    chunkRetryInterval: 5000,
-//    simultaneousUploads: 4,
-//    singleFile: true
-//  };
-//
-//  flowFactoryProvider.on('catchAll', function (event) {
-//    console.log('catchAll', arguments);
-//  });
-//
-//});
-
-
 // Inject npolarApiConfig and run
-npdcMapApp.run((npolarApiConfig, npdcAppConfig) => {
+npdcMapApp.run(($http, npolarApiConfig, npdcAppConfig, NpolarTranslate, NpolarLang) => {
+  
   var environment = "production";
   var autoconfig = new AutoConfig(environment);
-  angular.extend(npolarApiConfig, autoconfig, { resources, formula : { template : 'default' } });
+  
+  Object.assign(npolarApiConfig, autoconfig, { resources, formula : { template : 'default' } });
   console.log("npolarApiConfig", npolarApiConfig);
 
-  npdcAppConfig.cardTitle = '';
-  npdcAppConfig.toolbarTitle = 'Map archive';
+  // i18n
+  $http.get('//api.npolar.no/text/?q=&filter-bundle=npdc-map&format=json&variant=array&limit=all').then(response => {
+    
+    NpolarTranslate.appendToDictionary(response.data);
+    
+    NpolarTranslate.dictionary['npdc.app.Title'] = [
+      {'@language': 'en', '@value': 'Map archive'},
+      {'@language': 'no', '@value': 'Kartarkiv'}
+    ];
+    NpolarLang.setLanguages(npdcAppConfig.i18n.languages);
+  });
 });
