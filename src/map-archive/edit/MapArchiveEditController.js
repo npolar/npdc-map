@@ -56,17 +56,6 @@ let MapArchiveEditController = function ($scope, $controller, $http, $log, $rout
   let autocompleteFacets = ['publishers.name', 'rightsHolder.name', 'archives.organisation', 'publication.country'];
   formulaAutoCompleteService.autocompleteFacets(autocompleteFacets, $scope.resource, $scope.formula);
   
-  fileFunnelService.fileUploader({
-    match(field) {
-      return field.id === "images";
-    },
-    server: `${NpolarApiSecurity.canonicalUri(npolarApiConfig.base)}/map/archive/${id}/_file`,
-    multiple: true,
-    progress: false,
-    //restricted: (map) => map.restricted,
-    successCallback: MapImageService.editMediaLinkFromFileUpload
-  }, $scope.formula);
-  
   //chronopicService.defineOptions('#/rightsExpire', {locale: NpolarLang.getLang(), format: '{YYYY}-{MM}-{DD}'});
   
   // New action, ie. create new document and edit with formula
@@ -96,9 +85,21 @@ let MapArchiveEditController = function ($scope, $controller, $http, $log, $rout
   };
   
   let r = $scope.edit(true /* generate uuid */);
+  
   if (r && r.$promise) {
     r.$promise.then(map => {
       
+      // File funnel upload
+      fileFunnelService.fileUploader({
+        match(field) {
+          return field.id === "images";
+        },
+        server: `${NpolarApiSecurity.canonicalUri(npolarApiConfig.base)}/map/archive/${$routeParams.id}/_file`,
+        multiple: true,
+        progress: false,
+        restricted: map.restricted,
+        successCallback: MapImageService.editMediaLinkFromFileUpload
+      }, $scope.formula);
 
 
     });
