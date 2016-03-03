@@ -66,18 +66,7 @@ let MapArchiveEditController = function ($scope, $controller, $http, $log, $rout
     //restricted: (map) => map.restricted,
     successCallback: MapImageService.editMediaLinkFromFileUpload
   }, $scope.formula);
-    
-
-  //console.log(`${NpolarApiSecurity.canonicalUri(npolarApiConfig.base)}/map/archive/${id}/_file/`);
-  //console.debug(NpolarApiSecurity.canonicalUri());
-  /*$scope.formula.templates = [
-    {
-      match(field) {
-        //console.log(field.path);
-        return field.id === "placenames_object"; },
-      template: '<npdc:formula-placename></npdc:formula-placename>'
-    }
-  ];*/
+  
   //chronopicService.defineOptions('#/rightsExpire', {locale: NpolarLang.getLang(), format: '{YYYY}-{MM}-{DD}'});
   
   // New action, ie. create new document and edit with formula
