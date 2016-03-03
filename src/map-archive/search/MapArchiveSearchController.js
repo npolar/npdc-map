@@ -2,63 +2,57 @@
 /**
  * @ngInject
  */
-var MapArchiveSearchController = function ($scope,  $controller, $location, $log, MapArchive, MapImageService, npdcAppConfig) {
+var MapArchiveSearchController = function ($scope,  $controller, $location, $log,
+  npdcAppConfig, MapImageService, MapArchive) {
 
   $controller('NpolarEditController', { $scope: $scope });
 
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
 
-  let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,links,publication.year,collection,location.area',
-    facets: 'type,location.area,location.country',
-    'rangefacet-publication.year': 25
-  };
-
-  let invariants = $scope.security.isAuthenticated() ? {} : { 'not-restricted': true, 'filter-links.rel': 'edit-media'
-    //,'filter-links.length': '0..'
-  };
-
-  if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
-    defaults.facets += ',archives.restricted,organisation,publication.publisher,publication.code,publication.series,publication.country,location.hemisphere';
-    if (!$location.search()['filter-created']) {
-      defaults['date-year'] = 'created';
-    } else {
-      defaults['date-month'] = 'created';
-    }
-  }
-
   let search = function () {
+    
+    let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,images,publication.year,collection,location.area,created,updated',
+      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere',
+      'rangefacet-publication.year': 50
+    };
+
+    let invariants = $scope.security.isAuthenticated() ? {} : { 'filter-restricted': false };
+  
+    if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
+      defaults.facets += ',archives,publication.code,publication.series';
+      defaults['date-year'] = 'created';
+      defaults['date-year'] = 'updated';
+    }
     let query = Object.assign({}, defaults, invariants);
     $scope.search(query);
   };
-
-  search();
-
-  npdcAppConfig.cardTitle = "Map Archive";
+  
+  
+  
   npdcAppConfig.search.local.results = {
-    subtitle: "location/area",
-    detail: (e) => "Published: " + (e.publication ? e.publication.year : '-')
+    title: (map) => MapImageService.title(map),
+    //subtitle: (map) => map.placenames.map(p => p.area).join(''),
+    detail: (map) => `${map.type}`
   };
-
+  
   npdcAppConfig.search.local.filterUi = {
-    'publication.year': {
+    /*'publication.year': {
       type: 'range'
     },
     'year-created': {
       type: 'range'
     },
-    'updated': {
-      type: 'hidden'
-    }
+    'year-updated': {
+      type: 'range'
+    }*/
   };
-
-  $scope.gotoMap = function (id) {
-    $location.url('/archive/'+id);
-  };
-
+  
   $scope.$on('$locationChangeSuccess', (event, data) => {
     search();
   });
+  
+  search();
 
 };
 
