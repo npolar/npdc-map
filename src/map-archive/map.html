@@ -62,20 +62,18 @@
   <section ng-if="document.scales">
     <h3>Målestokk</h3>
     <span ng-repeat="scale in document.scales">
-      1:{{scale}}
+      1:{{scale}} |
     </span>
   </section>
     
-  
-  
   <section>
      <h3>Summary</h3>
-        <p ng-repeat="s in document.summaries">{{ s.summary }} [{{ s.lang }}]</p>
-        <div ng-if="security.hasSyst/editem(resource.path)">
-          <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>
-        </div>
-
-
+     <p ng-repeat="s in document.summaries">{{ s.summary }} [{{ s.lang }}]</p>  
+  </section>
+  
+   <section ng-if="true || security.hasSystem(resource.path)">
+    <h3>Comment</h3>
+    <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>
   </section>
 
 
@@ -97,12 +95,14 @@
   
   <section ng-if="document.images"><!--&& document.license ? -->
     <md-divider></md-divider>
+    <h2>
+      <md-icon>file_download</md-icon>Download </h2>
     <h3>
-      <md-icon>file_download</md-icon>Download originals (highest quality map scans)</h3>
+      Originals (high quality map scans)</h3>
     
       <div ng-repeat="image in document.images">
         <a download ng-href="{{image.uri}}">
-          <md-icon title="{{image.length | bytes }} / {{image.type | format }}">image</md-icon>{{image.filename}}</a>&nbsp;({{image.length | bytes }})
+          <md-icon title="{{image.length | bytes }} - {{image.type }}">image</md-icon>{{image.filename}}</a>&nbsp;({{image.length | bytes }})
       </div>
   </section>
    
