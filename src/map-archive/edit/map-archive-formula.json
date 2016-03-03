@@ -3,41 +3,27 @@
     {
       "title": "Map",
       "fields": [
-        "title", "subtitle",
-       {
-          "id": "type"
-        },
-        { "id": "scale", "step": 100000 },
-        {
-          "id": "restricted"
-        }
+        "type",
+        "title",
+        "preamble",
+        "subtitle",
+        "summaries",
+        "comments",
+        "tags"
       ]
     },
     {
       "title": "Publication",
       "fields": [
-        {
-          "id": "publication"
-        }, "rightsHolder", "media"
+        { "id": "publication" },
+        "publishers"
       ]
-    },
-    { "title" : "Texts",
-      "fields": ["summaries",
-        "comments", "tags"]
     },
     {
       "title": "Geographic",
       "fields": [
-        {
-          "id": "location", "fields": [
-            { "id": "bbox" },
-            { "id": "hemisphere"},
-            { "id": "country" },
-            { "id": "area" },
-            { "id": "placename" }
-          ]
-        },
-        "cartography"
+        { "id": "scales"},
+        "placenames"
       ]
     },
     {
@@ -49,20 +35,32 @@
       ]
     },
     {
-      "title": "People",
+      "title": "Contributors",
       "fields": [
-        {
-          "id": "processor"
+        "processor",
+        "contributors"
+      ]
+    },
+    {
+      "title": "Rights",
+      "fields": [     
+        { "id": "license",
+          "enum": [
+            null,
+            "http://creativecommons.org/publicdomain/mark/1.0/",
+            "http://creativecommons.org/publicdomain/zero/1.0/",
+            "http://creativecommons.org/licenses/by/4.0/"
+          ]
+        },
+        { "id": "restricted"},
+        { "id": "rightsHolder",
+          "fields": [{ "id": "name"}]
         }
       ]
     },
-    { 
-      "title": "Links",
-      "fields": [
-        {
-          "id": "links"
-        }
-      ]
+    {
+      "title": "Files",
+      "fields": [{"id": "images"}]
     }
   ]
 }
