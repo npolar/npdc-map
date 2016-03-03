@@ -26,6 +26,14 @@ var MapArchiveShowController = function ($scope, $controller, $log, $routeParams
   $scope.year = function (year) {
     return year > 0 ? year : 'unknown year';
   };
+  
+  $scope.principalInvestigators = function(contributors=[]) {
+    return contributors.filter(c => c.role === 'principalInvestigator');
+  };
+  
+  $scope.editors = function(contributors=[]) {
+    return contributors.filter(c => c.role === 'editor');
+  };
 
   show();
 };
