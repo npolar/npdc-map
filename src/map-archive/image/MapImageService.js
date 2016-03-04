@@ -6,16 +6,7 @@ let MapImageService = function() {
   let self = this;
   
   this.base = 'http://public.data.npolar.no/kartarkiv';
-  
-  let editMediaLink = function(d) {
-    let mediaLink = d.links.find(l => { return (l.rel === 'edit-media'); });
-    
-    if (!mediaLink) {
-      mediaLink = d.links.find(l => { return (l.type === 'image/tiff'); });
-    }
-    return mediaLink;
-  };
-      
+        
   this.basename = function(filename) {
     return filename.split(/\..*$/)[0];
   };

@@ -6,13 +6,14 @@ var angular = require('angular');
 var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcCommon']);
 
 npdcMapApp.service('MapImageService', require('./map-archive/image/MapImageService'));
+npdcMapApp.factory('MapArchive', require('./map-archive/edit/MapArchive'));
 npdcMapApp.controller('MapArchiveShowController', require('./map-archive/show/MapArchiveShowController'));
 npdcMapApp.controller('MapArchiveSearchController', require('./map-archive/search/MapArchiveSearchController'));
 npdcMapApp.controller('MapArchiveEditController', require('./map-archive/edit/MapArchiveEditController'));
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [
-  {'path': '/map/archive', 'resource': 'MapArchive'},
+  {'path': '/map/archive', 'resource': 'MapArchiveResource'},
 ];
 
 resources.forEach(service => {
