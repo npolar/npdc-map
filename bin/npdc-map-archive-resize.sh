@@ -51,7 +51,9 @@ do
         # For restricted we also create a tiny preview in "open"
         openThumb=$dest/open/$format$yearIsodate$filename-thumb.$format
         create_preview $tif $openThumb 512
-        
+    
+      else
+        echo $tif
       fi
       
     else

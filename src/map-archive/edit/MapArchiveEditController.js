@@ -12,8 +12,10 @@ let MapArchiveEditController = function ($scope, $controller, $http, $log, $rout
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
   
+  console.log(MapArchive.schema);
+  
   $scope.formula = formula.getInstance({
-    schema: MapArchive.schema,
+    schema: '//api.npolar.no/schema/map-archive-1',
     form: 'map-archive/edit/map-archive-formula.json',
     templates: npdcAppConfig.formula.templates,
     languages: npdcAppConfig.formula.languages

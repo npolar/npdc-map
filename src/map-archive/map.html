@@ -66,12 +66,12 @@
     </span>
   </section>
     
-  <section>
+  <section ng-if="document.summary">
      <h3>Summary</h3>
      <p ng-repeat="s in document.summaries">{{ s.summary }} [{{ s.lang }}]</p>  
   </section>
   
-   <section ng-if="true || security.hasSystem(resource.path)">
+   <section ng-if="document.comment">
     <h3>Comment</h3>
     <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>
   </section>

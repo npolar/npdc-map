@@ -5,11 +5,11 @@
       "fields": [
         "type",
         "title",
-        "preamble",
-        "subtitle",
-        "summaries",
-        "comments",
-        "tags"
+        { "id": "preamble", "condition": "_rev"},
+        { "id": "subtitle", "condition": "_rev"},
+        { "id": "summaries", "condition": "_rev"},
+        { "id": "comments", "condition": "_rev"},
+        { "id": "tags", "condition": "_rev"}
       ]
     },
     {
@@ -60,7 +60,8 @@
     },
     {
       "title": "Files",
-      "fields": [{"id": "images"}]
+      "condition": "_rev",
+      "fields": [{"id": "images", "condition": "_rev"}]
     }
   ]
 }
