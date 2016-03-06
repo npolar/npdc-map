@@ -12,10 +12,8 @@ let MapArchiveEditController = function ($scope, $controller, $http, $log, $rout
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
   
-  console.log(MapArchive.schema);
-  
   $scope.formula = formula.getInstance({
-    schema: '//api.npolar.no/schema/map-archive-1',
+    schema: MapArchive.schema,
     form: 'map-archive/edit/map-archive-formula.json',
     templates: npdcAppConfig.formula.templates,
     languages: npdcAppConfig.formula.languages
@@ -23,7 +21,7 @@ let MapArchiveEditController = function ($scope, $controller, $http, $log, $rout
   
   let autocompleteFacets = ['publishers.name', 'rightsHolder.name', 'archives.organisation', 'publication.country'];
   formulaAutoCompleteService.autocompleteFacets(autocompleteFacets, $scope.resource, $scope.formula);
-  
+
   //chronopicService.defineOptions('#/rightsExpire', {locale: NpolarLang.getLang(), format: '{YYYY}-{MM}-{DD}'});
     
   let r = $scope.edit(true /* generate uuid */);
