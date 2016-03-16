@@ -1,0 +1,32 @@
+#!/bin/bash
+
+root=/mnt/datasets/api.npolar.no/_file/map/archive # Disk root of map archive originals
+dest=/mnt/public/Datasets/kartarkiv
+
+function create_icon {
+  original=$1
+  preview=$2
+  size=512
+  
+  if [[ ! -f $preview ]] ; then
+    mkdir -p `dirname $preview`
+    echo "[$size] $preview <- $original"
+    `nice convert -thumbnail $size $original $preview 2> /dev/null`
+  fi  
+}
+
+# Loop all map archive PNGs
+find $root -type f -iname *.png | while read filename 
+do
+  
+  echo "$filename"
+  
+  basename=`basename "$filename" .png`
+  basename=`basename "$basename" .PNG`
+  
+  id=`echo $filename | grep -oE '/_file\/map\/archive\/.*/' | grep -oE '[0-9a-fA-F-]{36,}'`
+  
+  icon="$dest/$id/$basename-512px.jpeg" 
+  create_icon "$filename" "$icon" 262144@ # 512^2
+  
+done
