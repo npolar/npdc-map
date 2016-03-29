@@ -2,7 +2,7 @@
 
 root=/mnt/datasets/api.npolar.no/_file/map/archive # Disk root of map archive originals
 dest=/mnt/public/Datasets/kartarkiv
-
+i=0
 function create_icon {
   original=$1
   preview=$2
@@ -19,7 +19,8 @@ function create_icon {
 find $root -type f -iname *.png | while read filename 
 do
   
-  echo "$filename"
+  i=$((i+1))
+  echo "$i"
   
   basename=`basename "$filename" .png`
   basename=`basename "$basename" .PNG`
