@@ -1,5 +1,4 @@
 #!/bin/bash
-# move to -- fiff?  
 root=/mnt/datasets/api.npolar.no/_file/map/archive/            # Disk root of map archive originals
 
 function create_png {
@@ -29,13 +28,3 @@ do
   echo "$png"
   create_png "$filename" "$png"
 done
-
-
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/16e0ffb7-7097-41ac-bbfe-a2a0666ba3bd/Anmeldelse_1.png -> /mnt/datasets/api.npolar.no/_file/map/archive/16e0ffb7-7097-41ac-bbfe-a2a0666ba3bd/Anmeldelse_1.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/4dba4dd6-a9c3-4740-b378-2f215c02613d/Anmeldelse_5_A.png -> /mnt/datasets/api.npolar.no/_file/map/archive/4dba4dd6-a9c3-4740-b378-2f215c02613d/Anmeldelse_5_A.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/4dba4dd6-a9c3-4740-b378-2f215c02613d/Anmeldelse_5_B.png -> /mnt/datasets/api.npolar.no/_file/map/archive/4dba4dd6-a9c3-4740-b378-2f215c02613d/Anmeldelse_5_B.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/4dba4dd6-a9c3-4740-b378-2f215c02613d/Anmeldelse_5_C.png -> /mnt/datasets/api.npolar.no/_file/map/archive/4dba4dd6-a9c3-4740-b378-2f215c02613d/Anmeldelse_5_C.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/59fcc19d-167e-57da-a05d-9aadc1a0f70a/WoodBaytoTerraNovaBay.png -> /mnt/datasets/api.npolar.no/_file/map/archive/59fcc19d-167e-57da-a05d-9aadc1a0f70a/WoodBaytoTerraNovaBay.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/5b0b4725-d5a2-4768-9032-354b44765db9/De_norske_kulfelter_01.png -> /mnt/datasets/api.npolar.no/_file/map/archive/5b0b4725-d5a2-4768-9032-354b44765db9/De_norske_kulfelter_01.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/a2f50463-65cc-527a-b8dc-66ee69820167/Restserie_053.png -> /mnt/datasets/api.npolar.no/_file/map/archive/a2f50463-65cc-527a-b8dc-66ee69820167/Restserie_053.png.png
-#PNG <- /mnt/datasets/api.npolar.no/_file/map/archive/d7ec35dd-6822-4b27-a7ee-9870944532eb/Anmeldelse_23.png -> /mnt/datasets/api.npolar.no/_file/map/archive/d7ec35dd-6822-4b27-a7ee-9870944532eb/Anmeldelse_23.png.png
