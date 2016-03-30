@@ -1,8 +1,9 @@
 'use strict';
 
-// @ngInject
-var MapArchiveShowController = function ($scope, $controller, $log, $routeParams,
+function MapArchiveShowController($scope, $controller, $log, $routeParams,
   NpolarApiSecurity, NpolarLang, MapArchive) {
+  
+  'ngInject';
 
   $controller('MapArchiveSearchController', {$scope: $scope});
 
@@ -64,6 +65,6 @@ var MapArchiveShowController = function ($scope, $controller, $log, $routeParams
   };
 
   show();
-};
+}
 
 module.exports = MapArchiveShowController;
