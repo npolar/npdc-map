@@ -1,7 +1,7 @@
 'use strict';
 
 // @ngInject
-let MapImageService = function() {
+let MapImageService = function($http) {
   
   let self = this;
   
@@ -11,22 +11,29 @@ let MapImageService = function() {
     return filename.split(/\..*$/)[0];
   };
   
-  this._image = function(image, map, suffix='-512px', format='jpeg') {
+  this._image = function(image, map, suffix='-512px', format='jpeg', base=self.base) {
     if (image && image.filename && map && map.id) {
-      return `${self.base}/${map.id}/${self.basename(image.filename)}${suffix}.${format}`;
+      let filename = image.filename.split(' ').join('_');
+      return `${base}/${map.id}/${self.basename(filename)}${suffix}.${format}`;
     }
   };
   
+  this.jpeg = function(image, map, suffix='') {
+    return self._image(image, map, suffix, 'jpeg');
+  };
+  
   this.icon = function(image, map) {
-    return self._image(image,map,'-512px', 'jpeg');
+    if (image) {
+      return self.jpeg(image,map,'-512px');
+    }
   };
   
   this.medium = function(image, map) {
-    return self._image(image,map,'-1920px', 'jpeg');
+    return self.jpeg(image,map,'-1920px');
   };
   
   this.large = function(image, map) {
-    return self._image(image,map,'-3000px', 'jpeg');
+    return self.jpeg(image,map,'-3000px');
   };
   
   this.title = function(map) {
@@ -48,16 +55,33 @@ let MapImageService = function() {
     }
   };
   
-  
-  this.editMediaLinkFromFileUpload = function(file) {
+  // image metadata <- fileFunnel file metadata
+  this.imageFromFile = function(file) {
+    //console.log(file);
     return {
       uri: file.url,
       filename: file.filename,
       rel: "edit-media",
       length: file.file_size,
-      //hash: [file.md5sum],
+      hash: 'md5:'+file.md5sum,
       type: file.content_type
     };
+  };
+  
+  // 
+  //File should be object with keys filename, url, [file_size, icon, extras].
+  this.fileFromImage = function(image) {
+    //console.log(image);
+    let f = {
+      url: image.uri,
+      filename: image.filename,
+      icon: self.icon({id: "x"}, image),
+      file_size: image.length,
+      md5sum: (image.hash||'md5:').split('md5:')[1],
+      content_type: image.type
+    };
+    console.log(f);
+    return f;
   };
     
   return this;

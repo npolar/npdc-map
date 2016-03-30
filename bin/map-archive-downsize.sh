@@ -1,6 +1,7 @@
 #!/bin/bash
 root=/mnt/datasets/api.npolar.no/_file/map/archive # Disk root of map archive originals
 dest=/mnt/public/Datasets/kartarkiv
+i=0
 
 function resize_image {
   original=$1
@@ -28,6 +29,8 @@ do
   large="$dest/$id/$basename-3000px.jpeg"
   jpeg="$dest/$id/$basename.jpeg"
   
+  i=$((i+1))
+  echo "$i"
   #resize_image "$filename" "$medium" 1920
   resize_image "$filename" "$large" 3000    
   #create_jpeg "$filename" "$jpeg"

@@ -1,0 +1,16 @@
+{
+  "fieldsets" : [
+    "Tittel og type",
+    "Publikasjon",
+    "Geografisk informasjon",
+    "Arkiv",
+    "Bidrag",
+    "",
+    "Filer"
+  ],
+  "fields": {
+    "summary": {
+      "title": "samandrag"
+    }
+  }
+}

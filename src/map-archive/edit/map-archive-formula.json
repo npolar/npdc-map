@@ -1,27 +1,35 @@
 {
   "fieldsets": [
     {
-      "title": "Map",
+      "title": "Title and type",
       "fields": [
-        "type",
         "title",
-        { "id": "preamble", "condition": "_rev"},
-        { "id": "subtitle", "condition": "_rev"},
-        { "id": "summaries", "condition": "_rev"},
-        { "id": "comments", "condition": "_rev"},
-        { "id": "tags", "condition": "_rev"}
+        { "id": "preamble"},
+        { "id": "subtitle"},
+       "type"
+        
       ]
     },
     {
       "title": "Publication",
       "fields": [
-        { "id": "publication" },
-        "publishers"
+        { "id": "publication" }
       ]
+    },
+    {
+      "title": "Contributions",
+      "fields": [
+        "publishers", { "id": "contributors",
+          "fields":[
+            { "id": "role",
+              "enum": ["principalInvestigator", "editor", "processor", "rightsHolder", "originator"]
+            }]
+        }]
     },
     {
       "title": "Geographic",
       "fields": [
+        { "id": "geometry", "fields": ["bbox"] },
         { "id": "scales"},
         "placenames"
       ]
@@ -35,33 +43,33 @@
       ]
     },
     {
-      "title": "Contributors",
+      "title": "Texts",
       "fields": [
-        "processor",
-        "contributors"
+        { "id": "summaries"},
+        { "id": "comments"}
       ]
     },
     {
-      "title": "Rights",
-      "fields": [     
+      "title": "Keywords",
+      "fields": [
+        { "id": "tags"}
+      ]
+    },
+    {
+      "title": "File uploads",
+      "fields": [
+        { "id": "restricted", "condition": "true"},
         { "id": "license",
           "enum": [
             null,
             "http://creativecommons.org/publicdomain/mark/1.0/",
             "http://creativecommons.org/publicdomain/zero/1.0/",
             "http://creativecommons.org/licenses/by/4.0/"
-          ]
+          ],
+          "default": "http://creativecommons.org/licenses/by/4.0/"
         },
-        { "id": "restricted"},
-        { "id": "rightsHolder",
-          "fields": [{ "id": "name"}]
-        }
+        { "id": "files", "condition": "true" }
       ]
-    },
-    {
-      "title": "Files",
-      "condition": "_rev",
-      "fields": [{"id": "images", "condition": "_rev"}]
     }
   ]
 }

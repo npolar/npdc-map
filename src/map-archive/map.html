@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <article ng-show="document" layout-padding>
   <header>
-    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map</h4>
-    <h1 class="md-display-2">{{ img.title(document) }} </h1>
+    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map <span ng-if="document.restricted">[restricted access]</span></h4>
+    <h1 ng-if="!formula" class="md-display-2">{{ img.title(document) }} </h1>
     
     {{ document.subtitle}}
     
@@ -19,8 +19,8 @@
       <npdc:edit-button class="np-primary-control"></npdc:edit-button>
     </div>
  
-    <span ng-if="document.restricted === true && document.rightsHolder">
-      © <a ng-href="?filter-rightsHolder.name={{document.rightsHolder.name}}">{{ document.rightsHolder.name }}</a>
+    <span ng-if="document.restricted === true && rightsHolders">
+      © {{ rightsHolders.join(' / ') }}
     </span>
     
     
@@ -48,8 +48,8 @@
     
   </header>
 
-  <section ng-if="document.images">
-      <span ng-if="document.images.length > 0" ng-repeat="image in document.images">
+  <section ng-if="document.files">
+      <span ng-if="document.files.length > 0" ng-repeat="image in document.files">
         <a ng-href="{{ img.large(image, document)}}">
           <img ng-src="{{ img.icon(image, document)}}"
             width="400"
@@ -93,24 +93,49 @@
     {{img.editMediaLink(document) | json }}
   </span>
   
-  <section ng-if="document.images"><!--&& document.license ? -->
+  <section ng-if="document.files"><!--&& document.license ? -->
+    
     <md-divider></md-divider>
     <h2>
       <md-icon>file_download</md-icon>Download </h2>
-    <h3>
-      Originals (high quality map scans)</h3>
+    
+    <h3>High quality</h3>
       <table>
 <!--        <th>
           <tr>Original (HQ)</tr>
           <tr>JPEG</tr>
         </th>-->
-      <tr ng-repeat="image in document.images"> 
+      <tr ng-repeat="image in images"> 
           <td><md-icon title="{{image.length | bytes }} - {{image.type }}">image</md-icon></td>
-          <td><a download ng-href="{{image.uri}}">{{image.filename}}</a> &nbsp;({{image.length | bytes }})</td>
-          <td><a ng-href="{{ img.jpeg(image, document) }}"> {{ img.basename(image.filename) }}.jpeg </a></td>
+          <td>
+            <a ng-if="document.license || security.hasSystem(resource.path)" download ng-href="{{image.uri}}{{ (key().length > 64) ? '?key='+key() : ''}}">{{image.filename}}</a>
+            <span ng-if="!document.license && !security.hasSystem(resource.path)">{{image.filename}}</span>
+            &nbsp;({{image.length | bytes }})</td>
       </tr>
       </table>
+      
+      <!--<h3>Medium quality</h3>
+      <table>
+      <tr ng-repeat="image in images"> 
+          <td><md-icon title="{{image.length | bytes }} - {{image.type }}">image</md-icon></td>
+          <td>
+            <a ng-if="document.license || security.hasSystem(resource.path)" download ng-href="{{image.large(image,document)}}">{{ img.basename(image.filename) }}-3000.jpeg</a>
+            <span ng-if="!document.license && !security.hasSystem(resource.path)">{{ img.basename(image.filename) }}-3000.jpeg</span>
+          </td>
+      </tr>
+      </table>-->
+      
+      <div ng-if="!document.license && security.hasSystem(resource.path)">
+        Note: The links abobe are ephemeral and cannot be shared...
+      </div>
+      
+       <div ng-if="!document.license && !security.hasSystem(resource.path)">
+        We cannot distribute this map, contact map section to request access
+    </div>
+      
   </section>
+  
+ 
    
   <section ng-if="document.license" xmlns:dct="http://purl.org/dc/terms/">
 
@@ -127,7 +152,7 @@
         <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title" rel="dct:type">
           The map <a ng-href="archive/{{document.id}}">{{ img.title(document)}}</a>
         </span> is free to reuse by attributing <a xmlns:cc="http://creativecommons.org/ns#" ng-href="{{document.rightsHolder.uri }}"
-        property="cc:attributionName" rel="cc:attributionURL">{{ document.rightsHolder.name }}</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.      
+        property="cc:attributionName" rel="cc:attributionURL">{{ rightsHolder }}</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.      
     </p>
   </section> 
     
@@ -154,6 +179,13 @@
     </span>
   </section>
   
+  <section ng-if="document.publication.languages">
+    <h3>Languages</h3>
+    <span ng-repeat="code in document.publication.languages">
+      {{ language(code) }}</a>
+    </span>
+  </section>
+  
   <section ng-if="document.placenames">
     <h3>Placenames</h3>
     <span ng-repeat="p in document.placenames">
@@ -166,6 +198,11 @@
       <a ng-href="archive?filter-placenames.country={{p.country}}">{{ p.country }}</a>
     </span>
   </section>
+  
+<!--  <section ng-if="document.contributors">
+    <h3>Contributions</h3>
+    {{ document.contributors | json }}
+  </section>-->
   
   <section ng-if="document.geometry && document.geometry.bbox">
     <h3>bbox</h3>

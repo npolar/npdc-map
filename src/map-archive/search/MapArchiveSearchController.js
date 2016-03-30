@@ -2,18 +2,41 @@
 /**
  * @ngInject
  */
-var MapArchiveSearchController = function ($scope,  $controller, $location, $log,
+var MapArchiveSearchController = function ($scope,  $controller, $location, $log, $http,
   npdcAppConfig, MapImageService, MapArchive) {
 
   $controller('NpolarEditController', { $scope: $scope });
 
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
+  
+    $scope.showNext = function() {
+    if (!$scope.feed) {
+      return false;
+    }
+    return ($scope.feed.entries.length < $scope.feed.opensearch.totalResults);
+  };
+
+  $scope.next = function() {
+    if (!$scope.feed.links) {
+      return;
+    }
+
+    let nextLink = $scope.feed.links.find(link => { return (link.rel === "next"); });
+    if (nextLink.href) {
+      $http.get(nextLink.href.replace(/^https?:/, '')).success(function(response) {
+        response.feed.entries = $scope.feed.entries.concat(response.feed.entries);
+        $scope.feed = response.feed;
+      });
+    }
+  };
+
+  
 
   let search = function () {
     
-    let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,images,publication.year,collection,location.area,created,updated',
-      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere',
+    let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,files,publication.year,collection,location.area,created,updated',
+      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role',
       'rangefacet-publication.year': 50
     };
 
