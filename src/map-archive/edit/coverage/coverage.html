@@ -1,0 +1,17 @@
+<div ng-if="field.visible">
+  <leaflet options="mapOptions" flex="100" class="coverage-map"></leaflet>
+  <div layout="row" layout-wrap>
+    <div flex="25" flex-sm="50">
+      <formula:field field="north"></formula:field>
+    </div>
+    <div flex="25" flex-sm="50">
+      <formula:field field="east"></formula:field>
+    </div>
+    <div flex="25" flex-sm="50">
+      <formula:field field="south"></formula:field>
+    </div>
+    <div flex="25" flex-sm="50">
+      <formula:field field="west"></formula:field>
+    </div>
+  </div>
+</div>
