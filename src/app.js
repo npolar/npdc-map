@@ -3,7 +3,14 @@
 var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 var angular = require('angular');
-var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcCommon']);
+require('npdc-common/src/wrappers/leaflet');
+
+
+var npdcMapApp = angular.module('npdcMapArchiveApp', ['npdcCommon', 'leaflet']);
+
+/*npdcMapApp.factory('L', function() {
+  return window.L; // assumes Leaflet has already been loaded on the page
+});*/
 
 npdcMapApp.service('MapImageService', require('./map-archive/image/MapImageService'));
 npdcMapApp.factory('MapArchive', require('./map-archive/edit/MapArchive'));

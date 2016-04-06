@@ -11,6 +11,8 @@ let MapImageService = function($http) {
     return filename.split(/\..*$/)[0];
   };
   
+  // $scope.images = map.files.filter(f => (/^image\//).test(f.type));
+  
   this._image = function(image, map, suffix='-512px', format='jpeg', base=self.base) {
     if (image && image.filename && map && map.id) {
       let filename = image.filename.split(' ').join('_');
@@ -21,15 +23,21 @@ let MapImageService = function($http) {
   this.jpeg = function(image, map, suffix='') {
     return self._image(image, map, suffix, 'jpeg');
   };
-  
+
   this.icon = function(image, map) {
     if (image) {
       return self.jpeg(image,map,'-512px');
     }
   };
   
+    
+  //this.ikon = function(map) {
+  //  let image = map.files.find(f => f.type === 'image/png');
+  //  console.log(image);
+  //};
+  
   this.medium = function(image, map) {
-    return self.jpeg(image,map,'-1920px');
+    return self.jpeg(image,map,'-3000px');
   };
   
   this.large = function(image, map) {

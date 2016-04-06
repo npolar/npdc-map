@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <article ng-show="document" layout-padding>
   <header>
+    {{ document.preamble }}
     <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map <span ng-if="document.restricted">[restricted access]</span></h4>
     <h1 ng-if="!formula" class="md-display-2">{{ img.title(document) }} </h1>
     
@@ -22,9 +23,7 @@
     <span ng-if="document.restricted === true && rightsHolders">
       © {{ rightsHolders.join(' / ') }}
     </span>
-    
-    
-
+    <!-- publisher -->
     <!-- <span ng-if="document.series">
       / series: <a ng-href="?filter-publication.series={{document.publication.series}}">{{ document.publication.series }}</a> / type: <a ng-href="?q=&filter-type={{document.type}}">{{document.type}}</a>
     </span>
@@ -59,39 +58,37 @@
       </span>
   </section>
   
+  <section ng-if="document.geometry && document.geometry.bbox">
+    
+    
+    <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
+    <b>bbox</b>
+    {{ document.geometry.bbox | json }}
+    
+  </section>
+  
   <section ng-if="document.scales">
     <h3>Målestokk</h3>
     <span ng-repeat="scale in document.scales">
       1:{{scale}} |
     </span>
   </section>
-    
-  <section ng-if="document.summary">
+
+  <section ng-if="document.summaries">
      <h3>Summary</h3>
      <p ng-repeat="s in document.summaries">{{ s.summary }} [{{ s.lang }}]</p>  
   </section>
   
-   <section ng-if="document.comment">
+   <section ng-if="document.comments">
     <h3>Comment</h3>
-    <p ng-show="c.comment" ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>
+    <p ng-repeat="c in document.comments">{{ c.comment}} [{{ c.lang }}]</p>
   </section>
 
 
-   <span ng-if="document.restricted === true" ng-repeat="image in img.editImageLinks(document.links)">
-     <img ng-src="{{img.preview(image.href, 'thumb')}}" alt="{{e.title}}">
-   </span>
 
-    <section ng-if="!document.restricted || document.restricted == false">
-      <span ng-repeat="image in img.editImageLinks(document.links)">
-        <img ng-src="{{img.preview(image.href, 'medium')}}" alt="{{image.title}}" title="{{image.title}}" width="100%">
-      </span>
     </section>
-    
-  <span ng-repeat="image in img.editImageLinks(document.links)">
-    <a ng-href="{{img.preview(image.href, 'medium')}}"><md-button class="md-raised">Medium</md-button></a>
-    <a ng-href="{{img.preview(image.href, 'large')}}"><md-button class="md-raised md-primary">Large</md-button></a>
-    {{img.editMediaLink(document) | json }}
-  </span>
+  
+
   
   <section ng-if="document.files"><!--&& document.license ? -->
     
@@ -129,11 +126,15 @@
         Note: The links abobe are ephemeral and cannot be shared...
       </div>
       
-       <div ng-if="!document.license && !security.hasSystem(resource.path)">
-        We cannot distribute this map, contact map section to request access
-    </div>
+      <div ng-if="!document.license && restricted == false">
+        WARN: No license 8and rest => false
+      </div>
       
-  </section>
+       <div ng-if="restricted == true && !document.license && !security.hasSystem(resource.path)">
+        We cannot distribute this map, contact map section to request access
+      </div>
+      
+
   
  
    
@@ -152,7 +153,7 @@
         <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title" rel="dct:type">
           The map <a ng-href="archive/{{document.id}}">{{ img.title(document)}}</a>
         </span> is free to reuse by attributing <a xmlns:cc="http://creativecommons.org/ns#" ng-href="{{document.rightsHolder.uri }}"
-        property="cc:attributionName" rel="cc:attributionURL">{{ rightsHolder }}</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.      
+        property="cc:attributionName" rel="cc:attributionURL">{{ attributionNames | json }}</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.      
     </p>
   </section> 
     
@@ -199,15 +200,12 @@
     </span>
   </section>
   
-<!--  <section ng-if="document.contributors">
-    <h3>Contributions</h3>
-    {{ document.contributors | json }}
-  </section>-->
-  
-  <section ng-if="document.geometry && document.geometry.bbox">
-    <h3>bbox</h3>
-    {{ document.geometry.bbox | json }}
+  <section ng-if="document.contributors">
+    <npdc:persons></npdc:persons>
+    <npdc:organisations></npdc:organisations>
   </section>
+  
+
 
   <!--<md-divider></md-divider>
 

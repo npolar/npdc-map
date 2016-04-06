@@ -48,9 +48,12 @@ function MapArchiveEditController($scope, $controller, $http, $log, $routeParams
       
     let autocompleteFacets = ["title", "preamble", "subtitle",
       "publishers.name",
+      "summaries.lang",
+      "comments.lang",
       "publication.country", "publication.where", "publication.code", "publication.series",
       "archives_item.where", "archives_item.count", "archives_item.organisation", "archives_item.country", "archives_item.placename",
-      "contributors.name", "contributors.role", "contributors.email", "contributors.homepage"];
+      "contributors.name", "contributors.role", "contributors.email", "contributors.homepage",
+      "tags"];
     formulaAutoCompleteService.autocompleteFacets(autocompleteFacets, $scope.resource, $scope.formula);    
     //chronopicService.defineOptions('#/rightsExpire', {locale: NpolarLang.getLang(), format: '{YYYY}-{MM}-{DD}'});
   }

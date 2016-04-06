@@ -13,7 +13,7 @@ var router = function ($routeProvider, $locationProvider) {
     templateUrl: 'map-archive/map.html',
     controller: 'MapArchiveShowController'
   }).when('/archive/:id/edit', {
-    templateUrl: 'map-archive/edit/edit-map.html',
+    templateUrl: 'map-archive/map.html',
     controller: 'MapArchiveEditController'
   }).when('/archive', {
     templateUrl: 'map-archive/search/search-map-archive.html',
