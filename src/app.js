@@ -17,6 +17,8 @@ npdcMapApp.factory('MapArchive', require('./map-archive/edit/MapArchive'));
 npdcMapApp.controller('MapArchiveShowController', require('./map-archive/show/MapArchiveShowController'));
 npdcMapApp.controller('MapArchiveSearchController', require('./map-archive/search/MapArchiveSearchController'));
 npdcMapApp.controller('MapArchiveEditController', require('./map-archive/edit/MapArchiveEditController'));
+npdcMapApp.directive('mapCoverage', require('./map-archive/edit/coverage/coverageDirective'));
+
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [
@@ -40,18 +42,18 @@ npdcMapApp.config($httpProvider => {
 
 // Inject npolarApiConfig and run
 npdcMapApp.run(($http, npolarApiConfig, npdcAppConfig, NpolarTranslate, NpolarLang) => {
-  
+
   var environment = "production";
   var autoconfig = new AutoConfig(environment);
-  
+
   Object.assign(npolarApiConfig, autoconfig, { resources, formula : { template : 'default' } });
   console.log("npolarApiConfig", npolarApiConfig);
 
   // i18n
   $http.get('//api.npolar.no/text/?q=&filter-bundle=npdc-map&format=json&variant=array&limit=all').then(response => {
-    
+
     NpolarTranslate.appendToDictionary(response.data);
-    
+
     NpolarTranslate.dictionary['npdc.app.Title'] = [
       {'@language': 'en', '@value': 'Map archive'},
       {'@language': 'no', '@value': 'Kartarkiv'}

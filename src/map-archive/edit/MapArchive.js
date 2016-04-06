@@ -4,14 +4,13 @@
  * @ngInject
  */
 var MapArchive = function(MapArchiveResource, NpolarApiSecurity) {
-  
-  //const schema = '//api.npolar.no/schema/map-archive-1';
-  const schema = 'map-archive/edit/map-archive-1.json';
-  
+
+  const schema = '//api.npolar.no/schema/map-archive-1';
+
   return Object.assign(MapArchiveResource, {
-    
+
     schema,
-    
+
     create: function() {
       // Set "processor" to current user
       let user = NpolarApiSecurity.getUser();
@@ -25,7 +24,7 @@ var MapArchive = function(MapArchiveResource, NpolarApiSecurity) {
       ];
       let type = 'topographic';
       let collection = 'map-archive';
-      let title = `Nytt kart oppretta av ${user.name} ${ new Date().toISOString()}`; 
+      let title = `Nytt kart oppretta av ${user.name} ${ new Date().toISOString()}`;
       let archives = [{
          'placename': 'Tromsø',
          'where': 'Framsenteret 5083',
@@ -40,7 +39,7 @@ var MapArchive = function(MapArchiveResource, NpolarApiSecurity) {
 
 
   });
-  
+
 };
 
 module.exports = MapArchive;
@@ -62,10 +61,10 @@ module.exports = MapArchive;
 //+ user
 //+ distributor
 //+ originator
-//+ pointOfContact 
-//+ principalInvestigator 
-//+ processor 
-//+ publisher 
+//+ pointOfContact
+//+ principalInvestigator
+//+ processor
+//+ publisher
 //+ author
 //+ sponsor
 //+ coAuthor
