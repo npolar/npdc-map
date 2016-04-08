@@ -1,6 +1,6 @@
 "use strict";
 
-let coverageDirective = function () {
+let coverageDirective = function (MapImageService) {
   "ngInject";
 
   return {
@@ -55,6 +55,8 @@ let coverageDirective = function () {
         },
         coverage: coverage
       };
+
+      $scope.img = MapImageService;
 
       $scope.$on('mapSelect', (e, layer) => {
         changesDueToMapSelect = 4;
