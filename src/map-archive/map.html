@@ -61,7 +61,7 @@
   <section ng-if="document.geometry && document.geometry.bbox">
     
     
-    <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
+    <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map" style="height: 600px;"></leaflet>
     <b>bbox</b>
     {{ document.geometry.bbox | json }}
     

@@ -1,19 +1,33 @@
 {
   "fieldsets": [
     {
-      "title": "Title and type",
+      "title": "Titles, scales, type",
       "fields": [
         "title",
         { "id": "preamble"},
         { "id": "subtitle"},
-       "type"
-
+       "type",
+      { "id": "scales"}
       ]
     },
     {
       "title": "Publication",
       "fields": [
         { "id": "publication" }
+      ]
+    },
+    {
+      "title": "Coverage",
+      "fields": [
+         { "id": "geometry", "fields": ["bbox"] }
+
+      ]
+    },
+    {
+      "title": "Placenames",
+      "fields": [
+
+        "placenames"
       ]
     },
     {
@@ -25,14 +39,6 @@
               "enum": ["principalInvestigator", "editor", "processor", "rightsHolder", "originator"]
             }]
         }]
-    },
-    {
-      "title": "Geographic",
-      "fields": [
-        { "id": "geometry", "fields": ["bbox"] },
-        { "id": "scales"},
-        "placenames"
-      ]
     },
     {
       "title": "Archives",

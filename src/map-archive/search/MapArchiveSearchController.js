@@ -36,7 +36,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   let search = function () {
     
     let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,files,publication.year,collection,location.area,created,updated',
-      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role',
+      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role,scales',
       'rangefacet-publication.year': 50
     };
 
