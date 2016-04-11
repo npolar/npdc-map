@@ -1,10 +1,8 @@
 'use strict';
 
-function MapArchiveEditController($scope, $controller, $http, $log, $routeParams, $window,
-  formula, formulaAutoCompleteService, fileFunnelService, chronopicService,
-  npolarApiConfig, NpolarMessage, NpolarApiSecurity, NpolarLang,
-  npdcAppConfig, NpdcSearchService,
-  MapArchive, MapImageService) {
+function MapArchiveEditController($scope, $controller, formula, formulaAutoCompleteService,
+  fileFunnelService, chronopicService, npolarApiConfig, NpolarMessage, NpolarApiSecurity, NpolarLang,
+  npdcAppConfig, MapArchive, MapImageService) {
 
   'ngInject';
 
@@ -80,7 +78,12 @@ function MapArchiveEditController($scope, $controller, $http, $log, $routeParams
 
   try {
     init();
-    $scope.edit();
+    $scope.edit().$promise.then((doc) => {
+      MapImageService.coverageMap = {
+        icon: MapImageService.icon(doc.files[0], doc),
+        title: MapImageService.basename(doc.files[0].filename)
+      };
+    });
   } catch(msg) {
     NpolarMessage.error(msg);
   }

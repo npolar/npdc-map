@@ -1,5 +1,16 @@
 <div ng-if="field.visible">
-  <leaflet options="mapOptions" flex="100" class="coverage-map"></leaflet>
+  <div layout layout-align="start stretch">
+    <div layout-padding>
+      <img ng-src="{{ img.coverageMap.icon }}"
+        width="400"
+        class="coverage-map-image"
+        alt="{{ img.coverageMap.title }}"
+        title="{{ img.coverageMap.title }}" />
+
+    </div>
+    <leaflet options="mapOptions" flex class="coverage-map"></leaflet>
+  </div>
+
   <div layout="row" layout-wrap>
     <div flex="25" flex-sm="50">
       <formula:field field="north"></formula:field>
