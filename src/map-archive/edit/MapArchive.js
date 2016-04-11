@@ -1,10 +1,7 @@
 'use strict';
 
-/**
- * @ngInject
- */
 var MapArchive = function(MapArchiveResource, NpolarApiSecurity) {
-
+  'ngInject';
   const schema = '//api.npolar.no/schema/map-archive-1';
 
   return Object.assign(MapArchiveResource, {
