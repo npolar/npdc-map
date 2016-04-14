@@ -25,6 +25,6 @@ do
   png=`basename "$png" .TIF`
   png="$dest/$png.png"
   
-  echo "$png"
+  #echo "$png"
   create_png "$filename" "$png"
 done
