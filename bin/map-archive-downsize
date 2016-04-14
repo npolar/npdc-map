@@ -30,7 +30,7 @@ do
   jpeg="$dest/$id/$basename.jpeg"
   
   i=$((i+1))
-  echo "$i"
+  #echo "$i"
   #resize_image "$filename" "$medium" 1920
   resize_image "$filename" "$large" 3000    
   #create_jpeg "$filename" "$jpeg"

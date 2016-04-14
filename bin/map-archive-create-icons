@@ -20,7 +20,7 @@ find $root -type f -iname *.png | while read filename
 do
   
   i=$((i+1))
-  echo "$i"
+  #echo "$i"
   
   basename=`basename "$filename" .png`
   basename=`basename "$basename" .PNG`

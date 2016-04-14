@@ -1,0 +1,5 @@
+#!/bin/bash
+DIR=`dirname $0`
+$DIR/map-archive-uploaded-tiff-to-png
+$DIR/map-archive-create-icons
+$DIR/map-archive-downsize
