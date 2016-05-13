@@ -3,9 +3,15 @@
  * @ngInject
  */
 var MapArchiveSearchController = function ($scope,  $controller, $location, $log, $http,
-  npdcAppConfig, MapImageService, MapArchive) {
+  npdcAppConfig, MapImageService, MapArchive, NpolarTranslate) {
+  
 
   $controller('NpolarEditController', { $scope: $scope });
+  
+  NpolarTranslate.dictionary['npdc.app.Title'] = [
+    {'@language': 'en', '@value': 'Map archive'},
+    {'@language': 'no', '@value': 'Kart'}
+  ];
 
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
@@ -35,12 +41,12 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
 
   let search = function () {
     
-    let defaults = { limit: 25, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,files,publication.year,collection,location.area,created,updated',
-      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role,scales',
+    let defaults = { limit: 16, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,files,publication.year,collection,location.area,created,updated',
+      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role,sca  les',
       'rangefacet-publication.year': 50
     };
 
-    let invariants = $scope.security.isAuthenticated() ? {} : { 'filter-restricted': false };
+    let invariants = $scope.security.isAuthenticated() ? {} : { 'filter-files.length': '1..' };
   
     if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
       defaults.facets += ',archives,publication.code,publication.series';

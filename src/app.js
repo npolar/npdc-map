@@ -55,8 +55,8 @@ npdcMapApp.run(($http, npolarApiConfig, npdcAppConfig, NpolarTranslate, NpolarLa
     NpolarTranslate.appendToDictionary(response.data);
 
     NpolarTranslate.dictionary['npdc.app.Title'] = [
-      {'@language': 'en', '@value': 'Map archive'},
-      {'@language': 'no', '@value': 'Kartarkiv'}
+      {'@language': 'en', '@value': 'Maps'},
+      {'@language': 'no', '@value': 'Kart'}
     ];
     NpolarLang.setLanguages(npdcAppConfig.i18n.languages);
   });

@@ -8,7 +8,7 @@ var router = function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true).hashPrefix('!');
 
   $routeProvider.when('/', {
-    redirectTo: '/archive'
+    template: require('./map-home/home.html')
   }).when('/archive/:id', {
     templateUrl: 'map-archive/map.html',
     controller: 'MapArchiveShowController'

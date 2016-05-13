@@ -5,7 +5,7 @@ let MapImageService = function($http) {
   
   let self = this;
   
-  this.base = 'http://public.data.npolar.no/kartarkiv';
+  this.base = '//api.npolar.no/map/archive-jpeg';
         
   this.basename = function(filename) {
     return filename.split(/\..*$/)[0];
@@ -16,16 +16,54 @@ let MapImageService = function($http) {
   this._image = function(image, map, suffix='-512px', format='jpeg', base=self.base) {
     if (image && image.filename && map && map.id) {
       let filename = image.filename.split(' ').join('_');
-      return `${base}/${map.id}/${self.basename(filename)}${suffix}.${format}`;
+      return `${base}/${map.id}/_file/${self.basename(filename)}${suffix}.${format}`;
     }
   };
   
-  this.jpeg = function(image, map, suffix='') {
-    return self._image(image, map, suffix, 'jpeg');
-  };
+  this._imageInLink = function(uri, size='medium', extension='jpg') {
+    
+    console.log(uri, size, extension);
+    
+    let path;
+    
+    if (/https?:\/\/api\.npolar\.no/.test(uri)) {
+      
+      let parts = uri.split("//")[1].split('/');
+      // ["api.npolar.no", "map", "archive", "14fb353a-5828-51cd-980e-5859343ff124", "_file", "11344", "Gronland_foreign_65.TIF"]
+      let filename = parts.pop().split(".")[0]; // "Gronland_foreign_65"       
+      let ident = parts[parts.length-1]; // "11344"
+      path = "https://data.npolar.no/_file/map/archive/open/legacy/"+ident+"/"+size+"/"+filename+"."+extension;
 
+    } else if (/(open|restricted)/.test(uri)) {
+
+      let p;
+      p = uri.split(/(open|restricted)/).slice(-2); // ["open", "/2015/2015-05-21/Bouvetøya_1986.tif"]
+      extension = (extension === 'jpg') ? 'jpeg' : extension;
+      
+      p[1] = p[1].replace(/\.tif(f)?$/i, `-${size}.${extension}`);
+      
+      path = `${this.base}/${p[0]}/${this.previewFormat}${p[1]}`;
+
+    }
+    console.log('path', path);
+    return path;
+  };
+  
+  
+  this.jpeg = function(image, map, suffix='') {
+    console.log(image);
+    console.debug(map);
+    if (image && map && map.files && map.files.length > 0) {
+      return self._image(image, map, suffix, 'jpeg');
+    } else if (map && map.links && map.links.length > 0) {
+      let link = map.links[0];
+      return self._imageInLink(link.href);
+    }
+    
+  };
+  
   this.icon = function(image, map) {
-    if (image) {
+    if (image || map) {
       return self.jpeg(image,map,'-512px');
     }
   };
@@ -48,8 +86,8 @@ let MapImageService = function($http) {
     if (map && map.title) {
      
       let title = map.title;
-      if (map.publication && map.publication.code) {
-        title = `[${map.publication.code}] ${title}`;
+      if (map.preamble) {
+        title = `(${map.preamble}) ${title}`;
       }
       /*if (map.subtitle) {
         title += ': '+map.subtitle;

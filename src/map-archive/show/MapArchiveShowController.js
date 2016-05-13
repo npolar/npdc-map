@@ -31,7 +31,7 @@ function MapArchiveShowController($scope, $controller, $log, $routeParams,
     if (names.length === 0) {
       names = npolar;
     }
-    console.log(names,map);
+    console.log('attributionNames', names, 'map', map);
     return names;
   }
   

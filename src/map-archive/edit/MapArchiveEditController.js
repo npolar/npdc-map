@@ -78,11 +78,14 @@ function MapArchiveEditController($scope, $controller, formula, formulaAutoCompl
 
   try {
     init();
-    $scope.edit().$promise.then((doc) => {
-      MapImageService.coverageMap = {
-        icon: MapImageService.icon(doc.files[0], doc),
-        title: MapImageService.basename(doc.files[0].filename)
-      };
+    $scope.edit().$promise.then((map) => {
+      
+      if (map && map._rev && map.files && map.files.length > 0) {
+        MapImageService.coverageMap = {
+          icon: MapImageService.icon(map.files[0], map),
+          title: MapImageService.basename(map.files[0].filename)
+        };
+      }
     });
   } catch(msg) {
     NpolarMessage.error(msg);

@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <article ng-show="document" layout-padding>
   <header>
-    {{ document.preamble }}
-    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map <span ng-if="document.restricted">[restricted access]</span></h4>
-    <h1 ng-if="!formula" class="md-display-2">{{ img.title(document) }} </h1>
     
-    {{ document.subtitle}}
+    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map <span ng-if="document.restricted">[restricted access]</span>
+    <span ng-if="document.license" xmlns:dct="http://purl.org/dc/terms/">
+
+    <span ng-if="document.license =='http://creativecommons.org/publicdomain/mark/1.0/'">
+      <a rel="license" href="http://creativecommons.org/publicdomain/mark/1.0/">
+        <img src="//i.creativecommons.org/p/mark/1.0/88x31.png" style="border-style: none;" title="Public Domain" alt="Public Domain" />
+      </a>
+    </span>
+    <span ng-if="document.license =='http://creativecommons.org/licenses/by/4.0/'">
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+        <img alt="CC BY 4.0 license" title="CC BY 4.0 license" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/88x31.png" />
+      </a>      
+    </span>
+  </span> 
+    
+    </h4>
+    <h1 ng-if="!formula" class="md-display-2">{{ img.title(document) }} </h1>
+    <h1 ng-if="!formula && document.subtitle" class="md-display-1">{{ document.subtitle}}</h1>
     
     <!-- {{ principalInvestigators(document.contributors) | json }} -->
     
@@ -47,15 +61,31 @@
     
   </header>
 
-  <section ng-if="document.files">
+  <section ng-if="document.files||document.links">
       <span ng-if="document.files.length > 0" ng-repeat="image in document.files">
-        <a ng-href="{{ img.large(image, document)}}">
+        <a ng-if="document.restricted != true" ng-href="{{ img.large(image, document)}}">
           <img ng-src="{{ img.icon(image, document)}}"
             width="400"
             alt="{{img.basename(image.filename)}}"
             title="{{img.basename(image.filename)}}" />
         </a>
+        
+        <img ng-if="document.restricted" ng-src="{{ img.icon(image, document)}}"
+            width="400"
+            alt="{{img.basename(image.filename)}}"
+            title="{{img.basename(image.filename)}}" ></img>
+        
       </span>
+      <span ng-if="!document.files && document.links.length > 0" ng-repeat="link in document.links">
+        <a ng-if="document.restricted != true" ng-href="{{ img.large(link, document)}}">
+          <img ng-src="{{ img.icon(link, document)}}"
+            width="400"/>
+        </a>
+        
+        <img ng-if="document.restricted" ng-src="{{ img.icon(link, document)}}"
+            width="400"></img>
+      </span>
+      
   </section>
   
   <section ng-if="document.geometry && document.geometry.bbox">
@@ -176,7 +206,7 @@
   <section ng-if="document.tags">
     <h3>Tags</h3>
     <span ng-repeat="tag in document.tags">
-      <a href="?q={{tag}}">{{tag}}</a> /
+      <a href="archive?q={{tag}}">{{tag}}</a> /
     </span>
   </section>
   
@@ -220,5 +250,7 @@
   -->
 
   <npdc:document-meta></npdc:document-meta>
+  
+  <a href="https://data.npolar.no/dataset/cf9a9474-986b-4b9a-875e-8f82f9bfccb3">{{ 'About'|t}} </a>
   
 </article>
