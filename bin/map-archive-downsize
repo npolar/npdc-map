@@ -1,13 +1,13 @@
 #!/bin/bash
 root=/mnt/datasets/api.npolar.no/_file/map/archive # Disk root of map archive originals
-dest=/mnt/public/Datasets/kartarkiv
+dest=/mnt/datasets/api.npolar.no/_file/map/archive-jpeg
 i=0
 
 function resize_image {
   original=$1
   preview=$2
   size=$3
-  quality=80
+  quality=90
   
   if [[ ! -f $preview ]] ; then
     mkdir -p `dirname $preview`
