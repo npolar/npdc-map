@@ -29,7 +29,8 @@ var MapArchive = function(MapArchiveResource, NpolarApiSecurity) {
          'country': 'NO',
          'organisation': 'Norsk Polarinstitutt'
        }];
-      let license = 'http://creativecommons.org/licenses/by/4.0/';
+      let license = null; //'http://creativecommons.org/licenses/by/4.0/';
+      let rightsExpire = "2100-01-01";
       //let id = MapArchiveResource.randomUUID();
       return { title, license, type, collection, schema, archives, contributors };
     }

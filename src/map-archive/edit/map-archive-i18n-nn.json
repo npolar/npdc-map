@@ -1,16 +1,8 @@
 {
-  "fieldsets" : [
-    "Tittel og type",
-    "Publikasjon",
-    "Geografisk informasjon",
-    "Arkiv",
-    "Bidrag",
-    "",
-    "Filer"
-  ],
   "fields": {
-    "summary": {
-      "title": "samandrag"
+    "license": {
+      "title": "Lisens (for opplasta kart)",
+      "values": ["Opphavsrett", "Eigd av alle - ikkje verna av opphavsrett", "Fråskriving av opphavsrett (CC0)", "Namngjeving (CC BY 4.0)"]
     }
   }
 }

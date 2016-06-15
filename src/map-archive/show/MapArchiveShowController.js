@@ -1,6 +1,6 @@
 'use strict';
 
-function MapArchiveShowController($scope, $controller, $log, $routeParams,
+function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
   NpolarApiSecurity, MapArchive, MapImageService) {
   
   'ngInject';
@@ -99,7 +99,11 @@ function MapArchiveShowController($scope, $controller, $log, $routeParams,
   };
 
   init();
-  show();
+      // Wrap Leaflet map in a $timeout
+    $timeout(() => {    
+      show();
+    }); // end $timeou
+
 }
 
 module.exports = MapArchiveShowController;

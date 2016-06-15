@@ -1,11 +1,11 @@
 'use strict';
-/**
- * @ngInject
- */
-var MapArchiveSearchController = function ($scope,  $controller, $location, $log, $http,
-  npdcAppConfig, MapImageService, MapArchive, NpolarTranslate) {
-  
 
+var MapArchiveSearchController = function ($scope,  $controller, $location, $http, $timeout, $window,
+  npdcAppConfig, NpolarEsriLeaflet,
+  MapImageService, MapArchive, NpolarTranslate) {
+  
+  'ngInject';
+  
   $controller('NpolarEditController', { $scope: $scope });
   
   NpolarTranslate.dictionary['npdc.app.Title'] = [
@@ -15,8 +15,9 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
 
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
+  $scope.drawMap = true ;
   
-    $scope.showNext = function() {
+  $scope.showNext = function() {
     if (!$scope.feed) {
       return false;
     }
@@ -31,32 +32,114 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
     let nextLink = $scope.feed.links.find(link => { return (link.rel === "next"); });
     if (nextLink.href) {
       $http.get(nextLink.href.replace(/^https?:/, '')).success(function(response) {
-        response.feed.entries = $scope.feed.entries.concat(response.feed.entries);
+        
+        let uniq = [];
+        response.feed.entries.forEach(e => {
+          let f = $scope.feed.entries.find(existing => {
+            let exists = (existing.id === e.id);
+            return exists;
+          });
+          if (!f) {
+            uniq.push(e);
+          }
+        });
+        
+        response.feed.entries = $scope.feed.entries.concat(uniq);
+       
         $scope.feed = response.feed;
+        console.log('feed',$scope.feed.entries.length);
       });
     }
   };
 
-  
+  function mapFactory(esriBase=NpolarEsriLeaflet.uri()) {
+    
+    NpolarEsriLeaflet.element = 'bbox-map';
+    
+    let map = NpolarEsriLeaflet.mapFactory(esriBase);
+    map.setView([69, 0], 4);
+    
+    let attribution = ``; //Map: <a href="http://npolar.no">Norsk Polarinstitutt</a> &mdash; Data: <a href="${seatrack.home}">SEATRACK</a>`;
+    map.attributionControl.addAttribution(attribution);
+    
+    console.log('map', map);
+    return map;
+    
+  }
 
   let search = function () {
-    
-    let defaults = { limit: 16, sort: "-updated", fields: 'id,publication.code,title,subtitle,type,links,files,publication.year,collection,location.area,created,updated',
-      facets: 'type,placenames.area,placenames.country,license,restricted,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role,sca  les',
+
+    let limit = $location.search().limit || 40;
+    let defaults = { limit, sort: "-updated",
+    fields: 'id,publication,title,subtitle,type,links,files,collection,location,created,updated,geometry,license',
+    facets: 'type,placenames.area,placenames.country,license,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role,scales,archives,publication.code,publication.series',
       'rangefacet-publication.year': 50
     };
 
-    let invariants = $scope.security.isAuthenticated() ? {} : { 'filter-files.length': '1..' };
+    let invariants = {}; //$scope.security.isAuthenticated() ? {} : { 'filter-files.length': '1..' };
   
     if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
-      defaults.facets += ',archives,publication.code,publication.series';
       defaults['date-year'] = 'created';
       defaults['date-year'] = 'updated';
     }
     let query = Object.assign({}, defaults, invariants);
-    $scope.search(query);
+    
+    $scope.search(query).$promise.then(r =>{
+      let extents = r.feed.entries.filter(e => {
+        return (e.geometry && e.geometry.bbox && e.geometry.bbox.length >= 4);
+      });
+      
+      
+      let drawBboxes = false;
+      if ($scope.drawMap && extents.length > 0) {
+        $scope.bboxLayers = extents.map(m => {
+          return drawExtent(m);  
+        });
+
+        
+        console.log(`Added ${$scope.bboxLayers.length} bbox layers`);
+        
+        //$scope.map.invalidateSize();
+        let evt = $window.document.createEvent('UIEvents'); 
+        evt.initUIEvent('resize', true, false, $window, 0); 
+        $window.dispatchEvent(evt);
+        $window.dispatchEvent(new Event('resize'));
+        
+        $scope.map.fitBounds($scope.bboxLayers[0]);
+        
+        
+        
+      }
+    });
+    
+    
   };
   
+  
+  function drawExtent(map) {
+    
+    let west = map.geometry.bbox[0];
+    let south = map.geometry.bbox[1];
+    let east = map.geometry.bbox[2];
+    let north = map.geometry.bbox[3];
+    
+    let bbox = [
+      [south, west],
+      [north, east]
+    ];
+    
+    let layer = L.rectangle(bbox, {
+      color: "green",
+      weight: 3
+    });
+    
+    layer.on('click', function(e,l) {
+      console.log('click bbox', e);
+      //$scope.feed
+    });
+    
+    return layer.addTo($scope.map);
+  }
   
   
   npdcAppConfig.search.local.results = {
@@ -78,10 +161,31 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $log
   };
   
   $scope.$on('$locationChangeSuccess', (event, data) => {
+    if ($scope.drawMap && $scope.bboxLayers) {
+      console.log(`Removing ${$scope.bboxLayers.length} bbox layers`);
+      $scope.bboxLayers.forEach(bboxLayer => {
+        $scope.map.removeLayer(bboxLayer);
+      });
+      $scope.bboxLayers=[];
+    }
     search();
   });
   
-  search();
+  try {
+
+    // Wrap Leaflet map in a $timeout
+    $timeout(() => {
+      if ($scope.drawMap) {
+        $scope.map = mapFactory();
+      }
+      search();      
+    }, 1); // end $timeout
+    
+  
+  } catch (e) {
+    //NpolarMessage.error(e);
+  }
+
 
 };
 

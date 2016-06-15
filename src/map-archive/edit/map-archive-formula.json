@@ -64,7 +64,7 @@
     {
       "title": "File uploads",
       "fields": [
-        { "id": "restricted", "condition": "true"},
+        "rightsExpire",
         { "id": "license",
           "enum": [
             null,

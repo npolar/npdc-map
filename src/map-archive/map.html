@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <article ng-show="document" layout-padding>
   <header>
-    
-    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map <span ng-if="document.restricted">[restricted access]</span>
+    <h2 style="background-color: yellow:"><span ng-if="document && document._rev && document.license == null">{{'Restricted'|t|uppercase}} ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})</span></h2>
+    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map 
     <span ng-if="document.license" xmlns:dct="http://purl.org/dc/terms/">
 
     <span ng-if="document.license =='http://creativecommons.org/publicdomain/mark/1.0/'">
@@ -15,7 +15,7 @@
         <img alt="CC BY 4.0 license" title="CC BY 4.0 license" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/88x31.png" />
       </a>      
     </span>
-  </span> 
+    </span> 
     
     </h4>
     <h1 ng-if="!formula" class="md-display-2">{{ img.title(document) }} </h1>
@@ -92,8 +92,9 @@
     
     
     <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map" style="height: 600px;"></leaflet>
-    <b>bbox</b>
-    {{ document.geometry.bbox | json }}
+    <div><b ng-init="bbox=document.geometry.bbox">bbox</b>
+    {{ bbox | json }}
+    </div>
     
   </section>
   
@@ -124,23 +125,30 @@
     
     <md-divider></md-divider>
     <h2>
-      <md-icon>file_download</md-icon>Download </h2>
+      <span ng-if="!document.license && !security.hasSystem(resource.path)">Files (access only for for authorized users)</span>
+      <span ng-if="document.license || security.hasSystem(resource.path)"><md-icon >file_download</md-icon>Download</span>
+    </h2>
     
-    <h3>High quality</h3>
-      <table>
-<!--        <th>
-          <tr>Original (HQ)</tr>
-          <tr>JPEG</tr>
-        </th>-->
+    <table>
+
+      <tr style="font-weight: bolder">
+        <td></td><td>High quality (print)</td><td>Medium quality (web)</td></tr>
       <tr ng-repeat="image in images"> 
           <td><md-icon title="{{image.length | bytes }} - {{image.type }}">image</md-icon></td>
           <td>
             <a ng-if="document.license || security.hasSystem(resource.path)" download ng-href="{{image.uri}}{{ (key().length > 64) ? '?key='+key() : ''}}">{{image.filename}}</a>
             <span ng-if="!document.license && !security.hasSystem(resource.path)">{{image.filename}}</span>
-            &nbsp;({{image.length | bytes }})</td>
+            &nbsp;({{image.length | bytes }})
+          </td>
+          <td>
+            <a ng-if="document.license || security.hasSystem(resource.path)" ng-href="{{ img.large(image, document)}}">
+              {{ img.filename(img.large(image, document))}} </a>
+            <span ng-if="!document.license && !security.hasSystem(resource.path)">{{ img.basename(image.filename) }}-3000.jpeg</span>
+            &nbsp;
+          </td>
       </tr>
       </table>
-      
+      <span ng-if="!document.license && !security.hasSystem(resource.path)">The resources above are only accessible for authorized users</span>  
       <!--<h3>Medium quality</h3>
       <table>
       <tr ng-repeat="image in images"> 

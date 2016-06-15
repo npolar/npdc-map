@@ -11,6 +11,12 @@ let MapImageService = function($http) {
     return filename.split(/\..*$/)[0];
   };
   
+  this.filename = function(uri) {
+    let p = uri.split('/');
+    return p[p.length-1];
+  };
+  
+  
   // $scope.images = map.files.filter(f => (/^image\//).test(f.type));
   
   this._image = function(image, map, suffix='-512px', format='jpeg', base=self.base) {
@@ -22,8 +28,7 @@ let MapImageService = function($http) {
   
   this._imageInLink = function(uri, size='medium', extension='jpg') {
     
-    console.log(uri, size, extension);
-    
+    //console.log(uri, size, extension);
     let path;
     
     if (/https?:\/\/api\.npolar\.no/.test(uri)) {
@@ -45,14 +50,14 @@ let MapImageService = function($http) {
       path = `${this.base}/${p[0]}/${this.previewFormat}${p[1]}`;
 
     }
-    console.log('path', path);
+    //console.log('path', path);
     return path;
   };
   
   
   this.jpeg = function(image, map, suffix='') {
-    console.log(image);
-    console.debug(map);
+    //console.log(image);
+    //console.debug(map);
     if (image && map && map.files && map.files.length > 0) {
       return self._image(image, map, suffix, 'jpeg');
     } else if (map && map.links && map.links.length > 0) {
