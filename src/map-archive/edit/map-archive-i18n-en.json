@@ -1,0 +1,8 @@
+{
+  "fields": {
+    "license": {
+      "title": "Licence (for uploaded maps)",
+      "values": ["Copyright", "Public domain", "Public domain dedication - no rights reserved (CC0)", "Attribution (CC BY 4.0)"]
+    }
+  }
+}
