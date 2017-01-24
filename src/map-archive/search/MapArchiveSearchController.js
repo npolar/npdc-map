@@ -3,11 +3,11 @@
 var MapArchiveSearchController = function ($scope,  $controller, $location, $http, $timeout, $window,
   npdcAppConfig, NpolarEsriLeaflet,
   MapImageService, MapArchive, NpolarTranslate) {
-  
+
   'ngInject';
-  
+
   $controller('NpolarEditController', { $scope: $scope });
-  
+
   NpolarTranslate.dictionary['npdc.app.Title'] = [
     {'@language': 'en', '@value': 'Map archive'},
     {'@language': 'no', '@value': 'Kart'}
@@ -16,7 +16,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
   $scope.drawMap = true ;
-  
+
   $scope.showNext = function() {
     if (!$scope.feed) {
       return false;
@@ -32,7 +32,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
     let nextLink = $scope.feed.links.find(link => { return (link.rel === "next"); });
     if (nextLink.href) {
       $http.get(nextLink.href.replace(/^https?:/, '')).success(function(response) {
-        
+
         let uniq = [];
         response.feed.entries.forEach(e => {
           let f = $scope.feed.entries.find(existing => {
@@ -43,28 +43,26 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
             uniq.push(e);
           }
         });
-        
+
         response.feed.entries = $scope.feed.entries.concat(uniq);
-       
+
         $scope.feed = response.feed;
         console.log('feed',$scope.feed.entries.length);
       });
     }
   };
 
-  function mapFactory(esriBase=NpolarEsriLeaflet.uri()) {
-    
+  function mapFactory() {
+
     NpolarEsriLeaflet.element = 'bbox-map';
-    
-    let map = NpolarEsriLeaflet.mapFactory(esriBase);
+
+    let map = NpolarEsriLeaflet.mapFactory();
     map.setView([69, 0], 4);
-    
-    let attribution = ``; //Map: <a href="http://npolar.no">Norsk Polarinstitutt</a> &mdash; Data: <a href="${seatrack.home}">SEATRACK</a>`;
+
+    let attribution = `<a href="http://npolar.no">Norsk Polarinstitutt</a>`; // &mdash; Data: <a href="${}">Who</a>`;
     map.attributionControl.addAttribution(attribution);
-    
-    console.log('map', map);
     return map;
-    
+
   }
 
   let search = function () {
@@ -77,77 +75,78 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
     };
 
     let invariants = {}; //$scope.security.isAuthenticated() ? {} : { 'filter-files.length': '1..' };
-  
+
     if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
       defaults['date-year'] = 'created';
       defaults['date-year'] = 'updated';
     }
     let query = Object.assign({}, defaults, invariants);
-    
+
     $scope.search(query).$promise.then(r =>{
       let extents = r.feed.entries.filter(e => {
         return (e.geometry && e.geometry.bbox && e.geometry.bbox.length >= 4);
       });
-      
-      
+
+
       let drawBboxes = false;
       if ($scope.drawMap && extents.length > 0) {
         $scope.bboxLayers = extents.map(m => {
-          return drawExtent(m);  
+          return drawExtent(m);
         });
 
-        
+
         console.log(`Added ${$scope.bboxLayers.length} bbox layers`);
-        
+
         //$scope.map.invalidateSize();
-        let evt = $window.document.createEvent('UIEvents'); 
-        evt.initUIEvent('resize', true, false, $window, 0); 
+        let evt = $window.document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, $window, 0);
         $window.dispatchEvent(evt);
         $window.dispatchEvent(new Event('resize'));
-        
-        $scope.map.fitBounds($scope.bboxLayers[0]);
-        
-        
-        
+
+        // $scope.map.fitBounds($scope.bboxLayers[0]);
+
+
+
+
       }
     });
-    
-    
+
+
   };
-  
-  
+
+
   function drawExtent(map) {
-    
+
     let west = map.geometry.bbox[0];
     let south = map.geometry.bbox[1];
     let east = map.geometry.bbox[2];
     let north = map.geometry.bbox[3];
-    
+
     let bbox = [
       [south, west],
       [north, east]
     ];
-    
+
     let layer = L.rectangle(bbox, {
       color: "green",
       weight: 3
     });
-    
+
     layer.on('click', function(e,l) {
       console.log('click bbox', e);
       //$scope.feed
     });
-    
+
     return layer.addTo($scope.map);
   }
-  
-  
+
+
   npdcAppConfig.search.local.results = {
     title: (map) => MapImageService.title(map),
     //subtitle: (map) => map.placenames.map(p => p.area).join(''),
     detail: (map) => `${map.type}`
   };
-  
+
   npdcAppConfig.search.local.filterUi = {
     /*'publication.year': {
       type: 'range'
@@ -159,7 +158,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
       type: 'range'
     }*/
   };
-  
+
   $scope.$on('$locationChangeSuccess', (event, data) => {
     if ($scope.drawMap && $scope.bboxLayers) {
       console.log(`Removing ${$scope.bboxLayers.length} bbox layers`);
@@ -170,7 +169,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
     }
     search();
   });
-  
+
   try {
 
     // Wrap Leaflet map in a $timeout
@@ -178,10 +177,10 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
       if ($scope.drawMap) {
         $scope.map = mapFactory();
       }
-      search();      
+      search();
     }, 1); // end $timeout
-    
-  
+
+
   } catch (e) {
     //NpolarMessage.error(e);
   }
