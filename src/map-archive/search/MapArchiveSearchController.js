@@ -15,7 +15,7 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
 
   $scope.resource = MapArchive;
   $scope.img = MapImageService;
-  $scope.drawMap = true ;
+  $scope.drawMap = false ;
 
   $scope.showNext = function() {
     if (!$scope.feed) {
@@ -160,13 +160,13 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
   };
 
   $scope.$on('$locationChangeSuccess', (event, data) => {
-    if ($scope.drawMap && $scope.bboxLayers) {
-      console.log(`Removing ${$scope.bboxLayers.length} bbox layers`);
-      $scope.bboxLayers.forEach(bboxLayer => {
-        $scope.map.removeLayer(bboxLayer);
-      });
-      $scope.bboxLayers=[];
-    }
+    //if ($scope.drawMap && $scope.bboxLayers) {
+    //  console.log(`Removing ${$scope.bboxLayers.length} bbox layers`);
+    //  $scope.bboxLayers.forEach(bboxLayer => {
+    //    $scope.map.removeLayer(bboxLayer);
+    //  });
+    //  $scope.bboxLayers=[];
+    //}
     search();
   });
 
