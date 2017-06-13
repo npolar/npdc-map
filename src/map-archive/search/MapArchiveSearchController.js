@@ -79,9 +79,10 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
     if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
       defaults['date-year'] = 'created';
       defaults['date-year'] = 'updated';
+      defaults['facets'] += ',restricted';
     }
     let query = Object.assign({}, defaults, invariants);
-
+    
     $scope.search(query).$promise.then(r =>{
       let extents = r.feed.entries.filter(e => {
         return (e.geometry && e.geometry.bbox && e.geometry.bbox.length >= 4);

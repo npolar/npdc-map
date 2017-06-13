@@ -10,6 +10,7 @@ function MapArchiveEditController($scope, $controller, formula, formulaAutoCompl
   'ngInject';
 
   function init() {
+    console.log('schema', MapArchive.schema);
     $controller('NpolarEditController', { $scope: $scope });
     $scope.resource = MapArchive;
     $scope.img = MapImageService;
@@ -88,7 +89,7 @@ function MapArchiveEditController($scope, $controller, formula, formulaAutoCompl
   try {
     init();
     $scope.edit().$promise.then((map) => {
-      
+
       if (map && map._rev && map.files && map.files.length > 0) {
         MapImageService.coverageMap = {
           icon: MapImageService.icon(map.files[0], map),
