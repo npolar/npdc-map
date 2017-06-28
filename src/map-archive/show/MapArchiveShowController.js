@@ -41,13 +41,13 @@ function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
       $scope.document = map;
       $scope.attributionNames = attributionNames(map);
       $scope.document.organisations = map.contributors;
-      $scope.images = map.files.filter(f => (/^image\/png/).test(f.type));
+      $scope.images = (map.files||[]).filter(f => (/^image\/png/).test(f.type));
 
       const r = MapArchive.files().then(r =>  {
         if (r.data && r.data.files && r.data.files.length > 0) {
           map.files = r.data.files.map(hashi => MapImageService.imageFromFile(hashi));
         }
-        if (map.files) {
+        if (map.files && map.files.length > 0) {
           const png = map.files.filter(f => (/^image\/png/).test(f.type));
           const tiff = map.files.filter(f => (/^image\/tiff/).test(f.type));
           if (png) {
