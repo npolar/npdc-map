@@ -62,8 +62,9 @@
       ]
     },
     {
-      "title": "File uploads",
+      "title": "Files & rights",
       "fields": [
+        "restricted",
         "rightsExpire",
         { "id": "license",
           "enum": [
