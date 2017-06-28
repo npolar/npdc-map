@@ -2,7 +2,7 @@
   "fields": {
     "license": {
       "title": "Lisens (for opplasta kart)",
-      "values": ["Opphavsrett", "Eid av alle - ikke verna av opphavsrett", "Fraskriving av opphavsrett (CC0)", "Navngivelse (CC BY 4.0)"]
+      "values": ["Verna av opphavsrett [ingen lisens]", "Eid av alle - ikke verna av opphavsrett", "Fraskriving av opphavsrett (CC0)", "Navngivelse (CC BY 4.0)"]
     }
   }
 }
