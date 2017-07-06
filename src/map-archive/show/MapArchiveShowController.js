@@ -9,13 +9,13 @@ function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
 
   $controller('MapArchiveSearchController', {$scope: $scope});
 
-  this.qualities = [
+  $scope.qualities = [
     { value: 'high', text: 'High quality' },
     { value: 'web', text: 'Web quality' }
   ];
-  this.quality = 'web';
+  $scope.quality = 'web';
 
-  this.total_size = () => {
+  $scope.total_size = () => {
     let sum = 0;
     $scope.images.forEach(i => sum += i.length);
     return sum;

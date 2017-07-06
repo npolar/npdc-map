@@ -102,17 +102,17 @@
          <md-card-content>
            <div layout="row" ng-if="document.license || security.hasSystem(resource.path)">
 
-             <a download ng-href="{{img.all_files_uri(document, ctrl.quality)}}">
+             <a download ng-href="{{img.all_files_uri(document, quality)}}">
                <md-button class="md-fab" aria-label="Download image files">
                  <md-icon>file_download</md-icon>
-                 <md-tooltip>Download image files in {{ ctrl.quality }} quality</md-tooltip>
+                 <md-tooltip>Download image files in {{ quality }} quality</md-tooltip>
                </md-button>
              </a>
 
              <md-input-container>
                <label>Download quality</label>
-               <md-select ng-model="ctrl.quality">
-                 <md-option ng-repeat="q in ctrl.qualities" ng-value="q.value">
+               <md-select ng-model="quality">
+                 <md-option ng-repeat="q in qualities" ng-value="q.value">
                    {{q.text}}
                  </md-option>
                </md-select>
@@ -120,7 +120,7 @@
 
 
            </div>
-           <p class="md-caption">For high quality images, the downloaded ZIP archive will expand to {{ ctrl.total_size() | bytes }} (number of files: {{images.length}})</p>
+           <p class="md-caption">For high quality images, the downloaded ZIP archive will expand to {{ total_size() | bytes }} (number of files: {{images.length}})</p>
 
 
            <span class="md-subhead"><span ng-show="document.license" xmlns:dct="http://purl.org/dc/terms/">
