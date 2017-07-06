@@ -70,19 +70,26 @@ var MapArchiveSearchController = function ($scope,  $controller, $location, $htt
     let limit = $location.search().limit || 40;
     let defaults = { limit, sort: "-updated",
     fields: 'id,publication,title,subtitle,type,links,files,collection,location,created,updated,geometry,license',
-    facets: 'type,placenames.area,placenames.country,license,publication.year,publishers.name,publication.country,placenames.hemisphere,contributors.name,contributors.role,scales,archives,publication.code,publication.series',
-      'rangefacet-publication.year': 50
+    facets: 'type,placenames.area,license,publication.year,publishers.name,publication.country,scales,restricted',
+    'rangefacet-publication.year':100
     };
 
     let invariants = {}; //$scope.security.isAuthenticated() ? {} : { 'filter-files.length': '1..' };
 
     if ($scope.security.isAuthenticated() && $scope.security.isAuthorized('read', MapArchive.path))   {
-      defaults['date-year'] = 'created';
-      defaults['date-year'] = 'updated';
-      defaults['facets'] += ',restricted';
+      //defaults['date-year'] = 'created';
+      //defaults['date-year'] = 'updated';
+      //defaults['restricted'] = false;
+    }
+    // Show only open access maps (on first load, if not authenticated, and if no query)
+    if (!$scope.security.isAuthenticated() && (!$location.search().q  || $location.search().q === "")) {
+      // FIXME angular.js:14199 TypeError: Cannot read property 'term' of undefined
+    // at filterValue (QueryBuilder.js:21)
+    // at QueryBuilder.js:36
+      //$location.search(Object.assign({}, $location.search(), { 'filter-restricted': 'false' }));
     }
     let query = Object.assign({}, defaults, invariants);
-    
+
     $scope.search(query).$promise.then(r =>{
       let extents = r.feed.entries.filter(e => {
         return (e.geometry && e.geometry.bbox && e.geometry.bbox.length >= 4);

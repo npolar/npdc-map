@@ -1,93 +1,146 @@
 <!DOCTYPE html>
-<article ng-show="document" layout-padding>
-  <header>
-    <h2 style="background-color: yellow">
-      <span ng-if="document && document._rev && document.restricted == true">{{'Restricted'|t|uppercase}} ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})</span></h2>
-    <h4><a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map
-    <span ng-show="document.license" xmlns:dct="http://purl.org/dc/terms/">
+<div ng-if="formula">
+  <npdc:formula></npdc:formula>
+</div>
+<div ng-if="!formula">
+  <npdc:edit-button class="np-primary-control"></npdc:edit-button>
+</div>
 
-    <span ng-show="document.license =='http://creativecommons.org/publicdomain/mark/1.0/'">
-      <a rel="license" href="http://creativecommons.org/publicdomain/mark/1.0/">
-        <img src="//i.creativecommons.org/p/mark/1.0/88x31.png" style="border-style: none;" title="Public Domain" alt="Public Domain" />
-      </a>
-    </span>
-    <span ng-show="document.license =='http://creativecommons.org/licenses/by/4.0/'">
-      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-        <img alt="CC BY 4.0 license" title="CC BY 4.0 license" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/88x31.png" />
-      </a>
-    </span>
-    </span>
+<article ng-if="!formula" ng-show="document" ng-controller="MapArchiveShowController as ctrl" layout-padding class="md-body-2">
 
-    </h4>
-    <h1 ng-if="!formula" class="md-display-2">{{ img.title(document) }} </h1>
-    <h1 ng-if="!formula && document.subtitle" class="md-display-1">{{ document.subtitle}}</h1>
 
-    <!-- {{ principalInvestigators(document.contributors) | json }} -->
 
-    <!-- <h3>
-      <a href="?filter-publication.publisher={{document.publication.publisher}}">{{ document.publishers[0].name }}</a>
-    </h3> -->
+  <h2 ng-if="document && document._rev && document.restricted == true" style="background-color: yellow">
+    <span>{{'Restricted'|t|uppercase}} ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})</span>
+  </h2>
 
-    <div ng-if="formula">
-      <npdc:formula></npdc:formula>
-    </div>
-    <div ng-if="!formula">
-      <npdc:edit-button class="np-primary-control"></npdc:edit-button>
-    </div>
+  <md-card>
+     <md-card-title>
+       <md-card-title-text>
 
-    <span ng-if="document.restricted === true && rightsHolders">
-      © {{ rightsHolders.join(' / ') }}
-    </span>
-    <!-- publisher -->
-    <!-- <span ng-if="document.series">
-      / series: <a ng-href="?filter-publication.series={{document.publication.series}}">{{ document.publication.series }}</a> / type: <a ng-href="?q=&filter-type={{document.type}}">{{document.type}}</a>
-    </span>
 
-      <span ng-if="document.publication.code">
-        / code: <a ng-href="?filter-publication.code={{document.publication.code}}">{{ document.publication.code }}</a>
-      </span>
+         <span class="md-display-2">{{ img.title(document) }}</span><!-- md-headline -->
+         <span ng-if="document.subtitle" class="md-subhead">{{ document.subtitle }}</span>
+         <h2 ng-if="document.publishers.length > 0" ng-repeat="publisher in document.publishers" class="md-subhead">
+           {{publisher.name}}
+         </h2>
+       </md-card-title-text>
+     </md-card-title>
 
-     <span ng-if="true">
-        / scale: <a ng-href="?filter-scale={{document.scale}}">1:{{document.scales|json}}</a>
-      </span>
-    -->
-    <!--
-      / published: <a ng-href="?filter-publication.year={{document.publication.year}}">{{ year(document.publication.year) }}</a> in <a ng-href="?filter-publication.country={{document.publication.country | uppercase }}">{{ document.publication.country }}</a>
-    -->
-       <!-- / access: <a href="?filter-restricted={{ document.restricted == true ? 'true' : 'false' }}">{{ document.restricted == true ? 'restricted' : 'open' }}</a>-->
+     <md-card-content>
+       <div layout="row">
 
-    <span ng-repeat="publisher in document.publishers">
-      {{publisher.name}}
-    </span>
+         <header>
 
-  </header>
+<!-- {{ principalInvestigators(document.contributors) | json }} -->
 
-  <section ng-if="images||document.links">
-      <span ng-if="images.length > 0" ng-repeat="image in images">
-        <a ng-if="document.restricted != true" ng-href="{{ img.large(image, document)}}">
-          <img ng-src="{{ img.icon(image, document)}}"
-            width="400"
-            alt="{{img.basename(image.filename)}}"
-            title="{{img.basename(image.filename)}}" />
-        </a>
+           <!-- <h3>
+             <a href="?filter-publication.publisher={{document.publication.publisher}}">{{ document.publishers[0].name }}</a>
+           </h3> -->
 
-        <img ng-if="document.restricted" ng-src="{{ img.icon(image, document)}}"
-            width="400"
-            alt="{{img.basename(image.filename)}}"
-            title="{{img.basename(image.filename)}}" ></img>
 
-      </span>
-      <span ng-if="!images && document.links.length > 0" ng-repeat="link in document.links">
-        <a ng-if="document.restricted != true" ng-href="{{ img.large(link, document)}}">
-          <img ng-src="{{ img.icon(link, document)}}"
-            width="400"/>
-        </a>
 
-        <img ng-if="document.restricted" ng-src="{{ img.icon(link, document)}}"
-            width="400"></img>
-      </span>
+           <span ng-if="document.restricted === true && rightsHolders">
+             © {{ rightsHolders.join(' / ') }}
+           </span>
+           <!-- publisher -->
+           <!-- <span ng-if="document.series">
+             / series: <a ng-href="?filter-publication.series={{document.publication.series}}">{{ document.publication.series }}</a> / type: <a ng-href="?q=&filter-type={{document.type}}">{{document.type}}</a>
+           </span>
 
-  </section>
+             <span ng-if="document.publication.code">
+               / code: <a ng-href="?filter-publication.code={{document.publication.code}}">{{ document.publication.code }}</a>
+             </span>
+
+            <span ng-if="true">
+               / scale: <a ng-href="?filter-scale={{document.scale}}">1:{{document.scales|json}}</a>
+             </span>
+           -->
+           <!--
+             / published: <a ng-href="?filter-publication.year={{document.publication.year}}">{{ year(document.publication.year) }}</a> in <a ng-href="?filter-publication.country={{document.publication.country | uppercase }}">{{ document.publication.country }}</a>
+           -->
+              <!-- / access: <a href="?filter-restricted={{ document.restricted == true ? 'true' : 'false' }}">{{ document.restricted == true ? 'restricted' : 'open' }}</a>-->
+
+
+
+         </header>
+
+         <section ng-if="images">
+             <span ng-if="images.length > 0" ng-repeat="image in images">
+               <a ng-if="document.restricted != true" ng-href="{{ img.large(image, document)}}">
+                 <img ng-src="{{ img.icon(image, document)}}"
+                   width="400"
+                   alt="{{img.basename(image.filename)}}"
+                   title="{{img.basename(image.filename)}} [{{ img.mm(image.width, image.ppi) }} × {{ img.mm(image.height, image.ppi)}} mm]" />
+               </a>
+
+               <img ng-if="document.restricted" ng-src="{{ img.icon(image, document)}}"
+                   width="400"
+                   alt="{{img.basename(image.filename)}}"
+                   title="{{img.basename(image.filename)}} [{{ img.mm(image.width, image.ppi) }} × {{ img.mm(image.height, image.ppi)}} mm]" ></img>
+               <span ng-if="images.length == 1" class="md-caption"><br>Original print size: {{ img.mm(image.width, image.ppi) }} × {{ img.mm(image.height, image.ppi)}} mm</span>
+             </span>
+
+           </section>
+
+       </div>
+     </md-card-content>
+   </md-card>
+
+
+
+      <md-card>
+
+
+
+         <md-card-title>
+           <md-card-title-text>
+             <span class="md-headline">Download</span>
+           </md-card-title-text>
+         </md-card-title>
+
+         <md-card-content>
+           <div layout="row" ng-if="document.license || security.hasSystem(resource.path)">
+
+             <a download ng-href="{{img.all_files_uri(document, ctrl.quality)}}">
+               <md-button class="md-fab" aria-label="Download image files">
+                 <md-icon>file_download</md-icon>
+                 <md-tooltip>Download image files in {{ ctrl.quality }} quality</md-tooltip>
+               </md-button>
+             </a>
+
+             <md-input-container>
+               <label>Download quality</label>
+               <md-select ng-model="ctrl.quality">
+                 <md-option ng-repeat="q in ctrl.qualities" ng-value="q.value">
+                   {{q.text}}
+                 </md-option>
+               </md-select>
+             </md-input-container>
+
+
+           </div>
+           <p class="md-caption">For high quality images, the downloaded ZIP archive will expand to {{ ctrl.total_size() | bytes }} (number of files: {{images.length}})</p>
+
+
+           <span class="md-subhead"><span ng-show="document.license" xmlns:dct="http://purl.org/dc/terms/">
+
+             <span ng-show="document.license =='http://creativecommons.org/publicdomain/mark/1.0/'">
+               <a rel="license" href="http://creativecommons.org/publicdomain/mark/1.0/">
+                 <img src="//i.creativecommons.org/p/mark/1.0/88x31.png" style="border-style: none;" title="Public Domain" alt="Public Domain" />
+               </a>
+             </span>
+             <span ng-show="document.license =='http://creativecommons.org/licenses/by/4.0/'">
+               <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                 <img alt="CC BY 4.0 license" title="CC BY 4.0 license" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/88x31.png" />
+               </a>
+             </span>
+           </span></span>
+
+         </md-card-content>
+       </md-card>
+
+
 
   <section ng-if="document.geometry && document.geometry.bbox">
 
@@ -126,20 +179,22 @@
 
     <md-divider></md-divider>
     <h2>
-      <span ng-if="!document.license && !security.hasSystem(resource.path)">Files (access only for for authorized users)</span>
+      <span ng-if="!document.license && !security.hasSystem(resource.path)">Files (access is restricted)</span>
       <span ng-if="document.license || security.hasSystem(resource.path)"><md-icon >file_download</md-icon>Download</span>
     </h2>
+
+
 
     <table>
 
       <tr style="font-weight: bolder">
         <td></td><td>High quality (print)</td><td>Medium quality (web)</td></tr>
       <tr ng-repeat="image in images">
-          <td><md-icon title="{{image.length | bytes }} - {{image.type }}">image</md-icon></td>
+          <td><md-icon title="{{ image.filename }}: {{image.length | bytes }} ({{ image.ppi }}PPI)">image</md-icon></td>
           <td>
-            <a ng-if="document.license || security.hasSystem(resource.path)" download ng-href="{{image.uri}}{{ (key().length > 64) ? '?key='+key() : ''}}">{{image.filename}}</a>
+            <a ng-if="document.license || security.hasSystem(resource.path)" download ng-href="{{image.uri}}{{ (key().length > 64) ? '?key='+key() : ''}}" integrity="{{image.integrity}}">{{image.filename}}</a>
             <span ng-if="!document.license && !security.hasSystem(resource.path)">{{image.filename}}</span>
-            &nbsp;({{image.length | bytes }})
+            &nbsp;
           </td>
           <td>
             <a ng-if="document.license || security.hasSystem(resource.path)" ng-href="{{ img.large(image, document)}}">
@@ -190,9 +245,9 @@
       <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
         <img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />
         <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title" rel="dct:type">
-          The map <a ng-href="archive/{{document.id}}">{{ img.title(document)}}</a>
+          The linked map images of <a ng-href="archive/{{document.id}}">{{ img.title(document)}}</a>
         </span> is free to reuse by attributing <a xmlns:cc="http://creativecommons.org/ns#" ng-href="{{document.rightsHolder.uri }}"
-        property="cc:attributionName" rel="cc:attributionURL">{{ attributionNames | json }}</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+        property="cc:attributionName" rel="cc:attributionURL">{{ attributionNames[0] ||  attributionNames|json }}</a> and is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     </p>
   </section>
 
@@ -257,10 +312,14 @@
     </p>
 
   -->
+  <p>
+
+   <a ng-href="archive/?filter-type={{document.type}}">{{document.type}}</a> map
+ </p>
 
   <npdc:metadata document="document" resource="resource"></npdc:metadata>
 
 
-  <a href="https://data.npolar.no/dataset/cf9a9474-986b-4b9a-875e-8f82f9bfccb3">{{ 'About'|t}} </a>
+  <a href="https://data.npolar.no/dataset/cf9a9474-986b-4b9a-875e-8f82f9bfccb3">{{ 'Metadata'|t}} </a>
 
 </article>

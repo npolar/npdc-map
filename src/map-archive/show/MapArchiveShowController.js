@@ -9,6 +9,18 @@ function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
 
   $controller('MapArchiveSearchController', {$scope: $scope});
 
+  this.qualities = [
+    { value: 'high', text: 'High quality' },
+    { value: 'web', text: 'Web quality' }
+  ];
+  this.quality = 'web';
+
+  this.total_size = () => {
+    let sum = 0;
+    $scope.images.forEach(i => sum += i.length);
+    return sum;
+  };
+
   function init() {
     $scope.document = {};
     $scope.similar = {};
@@ -41,8 +53,11 @@ function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
       $scope.document = map;
       $scope.attributionNames = attributionNames(map);
       $scope.document.organisations = map.contributors;
+
+      // Set images from document
       $scope.images = (map.files||[]).filter(f => (/^image\/png/).test(f.type));
 
+      // Update images from _file service, prefer PNGs
       const r = MapArchive.files().then(r =>  {
         if (r.data && r.data.files && r.data.files.length > 0) {
           map.files = r.data.files.map(hashi => MapImageService.imageFromFile(hashi));

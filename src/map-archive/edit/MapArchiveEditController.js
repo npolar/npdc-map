@@ -82,7 +82,7 @@ function MapArchiveEditController($scope, $controller, formula, formulaAutoCompl
       },
       fileToValueMapper: MapImageService.imageFromFile,
       valueToFileMapper: MapImageService.fileFromImage,
-      fields: ['restricted', 'width', 'height', 'hash']
+      fields: ['width', 'height', 'modified', 'type', 'ppi']
     }, formula);
   }
 

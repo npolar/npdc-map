@@ -1,51 +1,19 @@
 {
   "fieldsets": [
     {
-      "title": "Titles, scales, type",
+      "title": "Titles & type",
       "fields": [
         "title",
-        { "id": "preamble"},
         { "id": "subtitle"},
-       "type",
-      { "id": "scales"}
+        { "id": "preamble"},
+       "type"
       ]
     },
     {
       "title": "Publication",
       "fields": [
-        { "id": "publication" }
-      ]
-    },
-    {
-      "title": "Coverage",
-      "fields": [
-         { "id": "geometry", "fields": ["bbox"] }
-
-      ]
-    },
-    {
-      "title": "Placenames",
-      "fields": [
-
-        "placenames"
-      ]
-    },
-    {
-      "title": "Contributions",
-      "fields": [
-        "publishers", { "id": "contributors",
-          "fields":[
-            { "id": "role",
-              "enum": ["principalInvestigator", "editor", "processor", "rightsHolder", "originator"]
-            }]
-        }]
-    },
-    {
-      "title": "Archives",
-      "fields": [
-        {
-          "id": "archives"
-        }
+        { "id": "publication" },
+        { "id": "scales"}
       ]
     },
     {
@@ -56,8 +24,29 @@
       ]
     },
     {
-      "title": "Keywords",
+      "title": "Coverage",
       "fields": [
+         { "id": "geometry", "fields": ["bbox"] }
+
+      ]
+    },
+    {
+      "title": "Agents",
+      "fields": [
+        "publishers", { "id": "contributors",
+          "fields":[
+            { "id": "role",
+              "enum": ["principalInvestigator", "editor", "processor", "rightsHolder", "originator"]
+            }]
+        },
+        {
+          "id": "archives"
+        }]
+    },
+    {
+      "title": "Classification",
+      "fields": [
+        "placenames",
         { "id": "tags"}
       ]
     },
