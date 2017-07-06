@@ -8,12 +8,6 @@
 
 <article ng-if="!formula" ng-show="document" ng-controller="MapArchiveShowController as ctrl" layout-padding class="md-body-2">
 
-
-
-  <h2 ng-if="document && document._rev && document.restricted == true" style="background-color: yellow">
-    <span>{{'Restricted'|t|uppercase}} ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})</span>
-  </h2>
-
   <md-card>
      <md-card-title>
        <md-card-title-text>
@@ -89,7 +83,7 @@
 
 
 
-      <md-card ng-if="document.license || security.hasSystem(resource.path)">
+      <md-card>
 
          <md-card-title>
            <md-card-title-text>
@@ -97,8 +91,11 @@
            </md-card-title-text>
          </md-card-title>
 
-         <md-card-content>
-           <div layout="row">
+         <md-card-content ng-if="images.length > 0">
+           <h2 ng-if="document && document._rev && document.restricted == true" style="background-color: yellow">
+             <span>{{'Restricted'|t|uppercase}} ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})</span>
+           </h2>
+           <div layout="row" ng-if="document.license || security.hasSystem(resource.path)">
 
              <a download ng-href="{{img.all_files_uri(document, quality)}}">
                <md-button class="md-fab" aria-label="Download image files">
@@ -116,9 +113,10 @@
                </md-select>
              </md-input-container>
 
+             <span ng-show="quality == 'high'" class="md-caption">For high quality images, the downloaded ZIP archive will expand to {{ total_size() | bytes }} (number of files: {{images.length}})</span>
+
 
            </div>
-           <p class="md-caption">For high quality images, the downloaded ZIP archive will expand to {{ total_size() | bytes }} (number of files: {{images.length}})</p>
 
 
            <span class="md-subhead"><span ng-show="document.license" xmlns:dct="http://purl.org/dc/terms/">
@@ -170,7 +168,6 @@
 
 
     </section>
-
 
 
   <section ng-if="document.files"><!--&& document.license ? -->
@@ -295,6 +292,7 @@
   <section ng-if="document.contributors">
     <npdc:persons></npdc:persons>
     <npdc:organisations></npdc:organisations>
+    <!-- {{ document.contributors | json }} -->
   </section>
 
 

@@ -131,9 +131,7 @@ let MapImageService = function($http) {
     return {
       uri: file.url,
       filename: file.filename,
-      rel: "edit-media",
       length: file.file_size,
-      hash: 'md5:'+file.md5sum,
       type: file.content_type
     };
   };
@@ -145,9 +143,9 @@ let MapImageService = function($http) {
     let f = {
       url: image.uri,
       filename: image.filename,
-      icon: self.icon({id: "x"}, image),
+      //icon: self.icon({id: "x"}, image),
       file_size: image.length,
-      md5sum: (image.hash||'md5:').split('md5:')[1],
+      //md5sum: (image.hash||'md5:').split('md5:')[1],
       content_type: image.type
     };
     console.log(f);
