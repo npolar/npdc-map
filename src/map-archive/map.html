@@ -89,9 +89,7 @@
 
 
 
-      <md-card>
-
-
+      <md-card ng-if="document.license || security.hasSystem(resource.path)">
 
          <md-card-title>
            <md-card-title-text>
@@ -100,7 +98,7 @@
          </md-card-title>
 
          <md-card-content>
-           <div layout="row" ng-if="document.license || security.hasSystem(resource.path)">
+           <div layout="row">
 
              <a download ng-href="{{img.all_files_uri(document, quality)}}">
                <md-button class="md-fab" aria-label="Download image files">
