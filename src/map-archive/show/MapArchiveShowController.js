@@ -54,29 +54,16 @@ function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
       $scope.attributionNames = attributionNames(map);
       $scope.document.organisations = map.contributors;
 
-      // Set images from document
-      $scope.images = (map.files||[]).filter(f => (/^image\/png/).test(f.type));
-
-      // Update images from _file service, prefer PNGs
-      const r = MapArchive.files().then(r =>  {
-        if (r.data && r.data.files && r.data.files.length > 0) {
-          map.files = r.data.files.map(hashi => MapImageService.imageFromFile(hashi));
-        }
-        if (map.files && map.files.length > 0) {
-          const png = map.files.filter(f => (/^image\/png/).test(f.type));
-          const tiff = map.files.filter(f => (/^image\/tiff/).test(f.type));
-          if (png) {
-            $scope.images = png;
-          } else if (tiff) {
-            $scope.images = tiff;
-          } else {
-            $scope.images = map.files.filter(f => (/^image\//).test(f.type));
-          }
-        }
-
-      });
-
-
+      // Set images, prefer PNGs
+      const png = map.files.filter(f => (/^image\/png/).test(f.type));
+      const tiff = map.files.filter(f => (/^image\/tiff/).test(f.type));
+      if (png) {
+        $scope.images = png;
+      } else if (tiff) {
+        $scope.images = tiff;
+      } else {
+        $scope.images = map.files.filter(f => (/^image\//).test(f.type));
+      }
 
       if (map.geometry && map.geometry.bbox.length === 4) {
         let bbox = map.geometry.bbox;
