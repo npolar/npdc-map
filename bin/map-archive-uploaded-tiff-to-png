@@ -4,8 +4,8 @@ archive=/mnt/datasets/api.npolar.no/_file/map/archive/            # Disk root of
 function create_png {
   original=$1
   png="${2// /_}"
+  id=$3
   endpoint="https://api.npolar.no/map/archive"
-  id=`echo $orginal | grep -oE '/_file\/map\/archive\/.*/' | grep -oE '[0-9a-fA-F-]{36,}'`
   file_uri="$endpoint/$id/_file"
 
   if [[ ! -f $png ]] ; then
@@ -15,7 +15,7 @@ function create_png {
 
     if [[ -f $png ]] ; then
       echo $file_uri
-      curl -nv -XPOST -F "filename=@$png" $file_uri
+      #curl -nv -XPOST -F "filename=@$png" $file_uri
     fi
 
   fi
@@ -28,6 +28,8 @@ do
   png=`basename "$filename" .tif`
   png=`basename "$png" .TIF`
   png="$dest/$png.png"
+
+  id=`echo $filename | grep -oE '/_file\/map\/archive\/.*/' | grep -oE '[0-9a-fA-F-]{36,}'`
   # echo "$png"
-  create_png "$filename" "$png"
+  create_png "$filename" "$png" "$id"
 done

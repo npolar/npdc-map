@@ -19,7 +19,7 @@ function resize_image {
 
     if [[ -f $preview ]] ; then
       echo $file_uri
-      curl -nv -XPOST -F "filename=@$preview" $file_uri
+      #curl -nv -XPOST -F "filename=@$preview" $file_uri
     fi
 
   fi
