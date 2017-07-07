@@ -9,11 +9,11 @@ function MapArchiveShowController($scope, $controller, $routeParams, $timeout,
 
   $controller('MapArchiveSearchController', {$scope: $scope});
 
-  $scope.qualities = [
+  this.qualities = [
     { value: 'high', text: 'High quality' },
     { value: 'web', text: 'Web quality' }
   ];
-  $scope.quality = 'web';
+  this.quality = 'high';
 
   $scope.total_size = () => {
     let sum = 0;

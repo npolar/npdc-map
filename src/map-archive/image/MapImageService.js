@@ -26,7 +26,7 @@ let MapImageService = function($http) {
     if (quality === 'web' || quality == 'preview') {
       file_endpoint = self.base;
     }
-    return `${file_endpoint}/${ map.id }/_file/_all?filename=${ encodeURIComponent(map.title) }&format=zip`;
+    return `${file_endpoint}/${ map.id }/_file/_all?filename=${ encodeURIComponent(map.title.split(' ').join('_'))+'_'+map.publication.year||'' }&format=zip`;
   }
 
   this.mm = function(pixels, ppi) {

@@ -73,6 +73,9 @@
                    alt="{{img.basename(image.filename)}}"
                    title="{{img.basename(image.filename)}} [{{ img.mm(image.width, image.ppi) }} × {{ img.mm(image.height, image.ppi)}} mm]" ></img>
                <span ng-if="images.length == 1" class="md-caption"><br>Original print size: {{ img.mm(image.width, image.ppi) }} × {{ img.mm(image.height, image.ppi)}} mm</span>
+               <span ng-if="document && document._rev && document.restricted == true" style="background-color: yellow">
+                 <br>{{'Restricted'|t|uppercase}} access ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})
+               </span>
              </span>
 
            </section>
@@ -83,37 +86,42 @@
 
 
 
-      <md-card>
+      <md-card ng-show="document.files.length > 0 && (document.license || security.hasSystem(resource.path))">
 
          <md-card-title>
            <md-card-title-text>
-             <span class="md-headline">Download</span>
+             <span class="md-headline">Download zip archive</span>
+
            </md-card-title-text>
          </md-card-title>
 
          <md-card-content ng-if="images.length > 0">
-           <h2 ng-if="document && document._rev && document.restricted == true" style="background-color: yellow">
-             <span>{{'Restricted'|t|uppercase}} ({{ 'rights expire in'|t}} {{document.rightsExpire | year }})</span>
-           </h2>
-           <div layout="row" ng-if="document.license || security.hasSystem(resource.path)">
 
-             <a download ng-href="{{img.all_files_uri(document, quality)}}">
+
+           <div layout="row">
+
+             <a download ng-href="{{img.all_files_uri(document, ctrl.quality)}}">
                <md-button class="md-fab" aria-label="Download image files">
                  <md-icon>file_download</md-icon>
-                 <md-tooltip>Download image files in {{ quality }} quality</md-tooltip>
+                 <md-tooltip>Download image files in {{ ctrl.quality }} quality</md-tooltip>
                </md-button>
              </a>
 
              <md-input-container>
-               <label>Download quality</label>
-               <md-select ng-model="quality">
-                 <md-option ng-repeat="q in qualities" ng-value="q.value">
+               <label>Quality</label>
+               <md-select ng-model="ctrl.quality">
+                 <md-option ng-repeat="q in ctrl.qualities" ng-value="q.value">
                    {{q.text}}
                  </md-option>
                </md-select>
              </md-input-container>
 
-             <span ng-show="quality == 'high'" class="md-caption">For high quality images, the downloaded ZIP archive will expand to {{ total_size() | bytes }} (number of files: {{images.length}})</span>
+            <span ng-show="ctrl.quality == 'high'" class="md-caption">High quality is the original full resolution image scans.
+              <span ng-if="images[0].ppi">Resolution: {{ images[0].ppi}} <abbr title="pixels per inch">PPI</abbr>.
+              The downloaded ZIP archive will expand to {{ total_size() | bytes }} (number of files: {{images.length}})</span>
+            </span>
+            <span ng-show="ctrl.quality == 'web'" class="md-caption">Web quality are JPEG images in two variants: 3000 and 512 pixels wide.
+            </span>
 
 
            </div>
@@ -254,9 +262,8 @@
     <div>
       <ul>
         <li ng-repeat="m in similar.maps">
-          <span ng-show="m.restricted == true">[restricted]</span>
           <span ng-show="false">{{ m._score}}</span>
-          <a ng-href="archive/{{ m.id }}">{{ m.title }}</a> ({{ m.publication.year }}) - {{ m.type }}</li>
+          <a ng-href="archive/{{ m.id }}">{{ m.title }}</a> ({{ m.publication.year }}) - {{ m.type }}<span ng-show="m.restricted == true"> [restricted]</span></li>
       </ul>
     </div>
 
