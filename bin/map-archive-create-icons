@@ -6,28 +6,40 @@ i=0
 function create_icon {
   original=$1
   preview=$2
+  id=$3
   size=512
-  
+  endpoint="https://api.npolar.no/map/archive-jpeg"
+  file_uri="$endpoint/$id/_file"
+
   if [[ ! -f $preview ]] ; then
     mkdir -p `dirname $preview`
     echo "[$size] $preview <- $original"
     `nice convert -thumbnail $size $original $preview 2> /dev/null`
-  fi  
+
+    if [[ -f $preview ]] ; then
+      echo $file_uri
+      curl -nv -XPOST -F "filename=@$preview" $file_uri
+    fi
+
+  fi
+
+
+
 }
 
 # Loop all map archive PNGs
-find $root -type f -iname *.png | while read filename 
+find $root -type f -iname *.png | while read filename
 do
-  
+
   i=$((i+1))
   #echo "$i"
-  
+
   basename=`basename "$filename" .png`
   basename=`basename "$basename" .PNG`
-  
+
   id=`echo $filename | grep -oE '/_file\/map\/archive\/.*/' | grep -oE '[0-9a-fA-F-]{36,}'`
-  
-  icon="$dest/$id/$basename-512px.jpeg" 
-  create_icon "$filename" "$icon" 262144@ # 512^2
-  
+
+  icon="$dest/$id/$basename-512px.jpeg"
+  create_icon "$filename" "$icon" "$id" 262144@ # 512^2
+
 done

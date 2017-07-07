@@ -6,32 +6,41 @@ i=0
 function resize_image {
   original=$1
   preview=$2
-  size=$3
+  id=$3
+  size=$4
   quality=90
-  
+  endpoint="https://api.npolar.no/map/archive-jpeg"
+  file_uri="$endpoint/$id/_file"
+
   if [[ ! -f $preview ]] ; then
     mkdir -p `dirname $preview`
     echo "[$size] $preview [quality $quality] <- $original"
     `nice convert -resize $size -quality $quality $original $preview 2> /dev/null`
-  fi  
+
+    if [[ -f $preview ]] ; then
+      echo $file_uri
+      curl -nv -XPOST -F "filename=@$preview" $file_uri
+    fi
+
+  fi
 }
 
 # Loop all (non-restricted) map archive originals => PNG files [-size +1M] ?
-find $root -type f -iname *.png | grep -v "\/restricted\/" | while read filename 
+find $root -type f -iname *.png | grep -v "\/restricted\/" | while read filename
 do
-  
+
   basename=`basename "$filename" .png`
   basename=`basename "$basename" .PNG`
-  
+
   id=`echo $filename | grep -oE '/_file\/map\/archive\/.*/' | grep -oE '[0-9a-fA-F-]{36,}'`
-  
+
   medium="$dest/$id/$basename-1920px.jpeg"
   large="$dest/$id/$basename-3000px.jpeg"
   jpeg="$dest/$id/$basename.jpeg"
-  
+
   i=$((i+1))
   #echo "$i"
   #resize_image "$filename" "$medium" 1920
-  resize_image "$filename" "$large" 3000    
+  resize_image "$filename" "$large" "$id" 3000
   #create_jpeg "$filename" "$jpeg"
 done

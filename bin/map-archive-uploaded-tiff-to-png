@@ -1,30 +1,33 @@
 #!/bin/bash
-root=/mnt/datasets/api.npolar.no/_file/map/archive/            # Disk root of map archive originals
+archive=/mnt/datasets/api.npolar.no/_file/map/archive/            # Disk root of map archive originals
 
 function create_png {
   original=$1
   png="${2// /_}"
-  
+  endpoint="https://api.npolar.no/map/archive"
+  id=`echo $orginal | grep -oE '/_file\/map\/archive\/.*/' | grep -oE '[0-9a-fA-F-]{36,}'`
+  file_uri="$endpoint/$id/_file"
+
   if [[ ! -f $png ]] ; then
     mkdir -p `dirname $png`
     echo "[PNG] $png <- $original"
     `nice convert -quality 00 "$original" "$png" 2> /dev/null`
+
+    if [[ -f $png ]] ; then
+      echo $file_uri
+      curl -nv -XPOST -F "filename=@$png" $file_uri
+    fi
+
   fi
-  
-  #if [[ -f $original && -f $png ]] ; then
-  #  rm "$original"
-  #fi
 }
 
-# Loop all map archive TIF files larger than 10M 
-find $root -type f -size +10M -iname *.tif | while read filename 
+# Loop all map archive TIF files larger than 10M
+find $archive -type f -size +10M -iname *.tif | while read filename
 do
-  
   dest=`dirname "$filename"`
   png=`basename "$filename" .tif`
   png=`basename "$png" .TIF`
   png="$dest/$png.png"
-  
-  #echo "$png"
+  # echo "$png"
   create_png "$filename" "$png"
 done
